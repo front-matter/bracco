@@ -1,0 +1,18 @@
+---
+cff-version: 1.2.0
+message: If you use Frontend for the DataCite DOI Fabrica service in your work, please
+  cite it using the following metadata
+doi: https://doi.org/10.5438/cxe5-rg55
+repository-code: https://github.com/datacite/bracco
+title: Frontend for the DataCite DOI Fabrica service
+authors:
+- given-names: Martin
+  family-names: Fenner
+  orcid: https://orcid.org/0000-0003-0077-4738
+abstract: The web frontend for the DataCite DOI Fabrica service for managing DataCite
+  providers, clients, prefixes and DOIs.
+version: 1.0.1
+keywords:
+- Doi Registration
+- DOI Fabrica
+date-released: '2018-05-09'
