@@ -32,6 +32,7 @@ export const clientTypeList = [
 ];
 
 export const softwareList = [
+  'Archipelago',
   'Cayuse',
   'CKAN',
   'Dataverse',
