@@ -43,7 +43,8 @@ const relationTypeList = [
   'Is collected by',
   'Collects',
   'Is translation of',
-  'Has translation'
+  'Has translation',
+  'Other'
 ];
 
 const relatedItemTypeList = [
@@ -68,7 +69,9 @@ const relatedItemTypeList = [
   'OutputManagementPlan',
   'PeerReview',
   'PhysicalObject',
+  'Poster',
   'Preprint',
+  'Presentation',
   'Project',
   'Report',
   'Service',

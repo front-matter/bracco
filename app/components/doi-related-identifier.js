@@ -45,7 +45,8 @@ const relationTypeList = [
   'Is collected by',
   'Collects',
   'Is translation of',
-  'Has translation'
+  'Has translation',
+  'Other'
 ];
 
 const relatedIdentifierTypeList = [
@@ -65,7 +66,9 @@ const relatedIdentifierTypeList = [
   'LSID',
   'PMID',
   'PURL',
+  'RAiD',
   'RRID',
+  'SWHID',
   'UPC',
   'URL',
   'URN',
@@ -94,7 +97,9 @@ const resourceTypeGeneralList = [
   'OutputManagementPlan',
   'PeerReview',
   'PhysicalObject',
+  'Poster',
   'Preprint',
+  'Presentation',
   'Project',
   'Report',
   'Service',
