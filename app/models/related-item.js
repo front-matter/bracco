@@ -33,6 +33,18 @@ const Validations = buildValidations({
       })
     })
   ],
+  relationTypeInformation: [
+    validator('presence', {
+      presence: true,
+      message: 'Please enter text to support the Relation Type.',
+      disabled: computed('model.{title,state}', function () {
+        return (
+          this.model.get('state') === 'draft' ||
+          isBlank(this.model.get('title'))
+        );
+      })
+    })
+  ],
   title: [
     validator('presence', {
       presence: true,
@@ -95,6 +107,9 @@ export default class RelatedItem extends Fragment.extend(Validations) {
 
   @attr('string', { defaultValue: null })
   relationType;
+
+  @attr('string', { defaultValue: null })
+  relationTypeInformation;
 
   @fragment('related-item-identifier', {
     defaultValue: {}

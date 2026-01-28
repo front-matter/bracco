@@ -183,6 +183,11 @@ export default class DoiRelatedItem extends Component {
   }
 
   @action
+  updateRelationTypeInformationAction(value) {
+    this.fragment.set('relationTypeInformation', value);
+  }
+
+  @action
   selectRelatedItemTypeAction(relatedItemType) {
     this.selectRelatedItemType(relatedItemType);
   }

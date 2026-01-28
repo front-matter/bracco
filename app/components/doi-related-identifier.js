@@ -300,6 +300,11 @@ export default class DoiRelatedIdentifier extends Component {
   }
 
   @action
+  updateRelationTypeInformationAction(value) {
+    this.fragment.set('relationTypeInformation', value);
+  }
+
+  @action
   selectRelatedIdentifierTypeAction(relatedIdentifierType) {
     this.selectRelatedIdentifierType(relatedIdentifierType);
   }

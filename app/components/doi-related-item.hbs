@@ -40,6 +40,18 @@
   </@form.element>
 </div>
 
+<div>
+  <label for="relationTypeInformation" class="subtitle">Relation Type Information</label> 
+</div> 
+<div doi-relation-type-information data-test-relation-type-information-field>
+  <input type="text" class="form-control relation-type-information-field" value={{this.fragment.relationTypeInformation}} placeholder="Relation Type Information"
+    oninput={{action "updateRelationTypeInformationAction" value="target.value"}} data-test-relation-type-information />
+</div>
+<div
+  class="help-block help-block-fragment relation-type-information-field">
+  Text to support the Relation Type.
+</div>
+
 <DoiRelatedItemIdentifier @model={{this.model}} @form={{this.form}} @fragment={{this.fragment.relatedItemIdentifier}} />
 
 <div class="power-select-label">
