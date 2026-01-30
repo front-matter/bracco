@@ -13,7 +13,9 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
   const dayjs = require('dayjs');
   const yearInRange = dayjs().add(Cypress.env('max_mint_future_offset'), 'year').format('YYYY');
   const yearOutOfRange = String(Number(yearInRange) + 1);
-
+  const repositoryName = Cypress.env('client_admin_username');
+  const repositoryPath = '/repositories/' + repositoryName.toLowerCase();
+  
   const creator = 'Miller, Elizabeth';
 
   before(function () {
@@ -32,8 +34,8 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.clearAllSessionStorage()
   });
 
-  it('is logged in to dois page', () => {
-    cy.visit('/repositories/datacite.testuser');
+  it.only('is logged in to dois page', () => {
+    cy.visit(repositoryPath);
 
     cy.contains('.nav-item a', /DOIs/i).click({ force: true });
 
@@ -42,18 +44,17 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     
     // Has upper right user profile link.
     cy.get('h2.work').contains('My data center');
-    cy.get('a#account_menu_link').should('contain', 'DATACITE.TESTUSER');
+    cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
 
     // Has tabs with correct one activated.
     cy.get('ul.nav-tabs li a').contains(/Info/i)
-      .and('have.attr', 'href').and('include', '/repositories/datacite.testuser');
+      .and('have.attr', 'href').and('include', repositoryPath);
     cy.get('ul.nav-tabs li a').contains(/Settings/i)
-      .and('have.attr', 'href').and('include', '/repositories/datacite.testuser/settings');
+      .and('have.attr', 'href').and('include', repositoryPath + '/settings');
     cy.get('ul.nav-tabs li a').contains(/Prefixes/i)
-      .and('have.attr', 'href').and('include', '/repositories/datacite.testuser/prefixes');
+      .and('have.attr', 'href').and('include', repositoryPath + '/prefixes');
     cy.get('ul.nav-tabs li.active a').contains(/DOIs/i)
-      .and('have.attr', 'href').and('include', '/repositories/datacite.testuser/dois');
-
+      .and('have.attr', 'href').and('include', repositoryPath + '/dois');
     // Has left sidebar buttons.
     cy.get('[data-test-left-sidebar]').should('be.visible').within(($sidebar) => {
       // Create DOI button - would like to do more testing but seems impossible in Cypress.
@@ -83,7 +84,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
   });
 
   it('is creating a doi - FORM', () => {
-    cy.visit('/repositories/datacite.testuser')
+    cy.visit(repositoryPath)
 
     cy.get('#omnipresent-new-doi').click();
 
