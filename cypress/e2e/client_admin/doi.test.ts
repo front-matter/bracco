@@ -43,7 +43,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.get('img.fabrica-logo').should('exist').should('have.attr', 'src').should('include', 'fabrica-logo.svg');
     
     // Has upper right user profile link.
-    cy.get('h2.work').contains('My data center');
+    cy.get('h2.work').contains('DataCite Test Repository');
     cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
 
     // Has tabs with correct one activated.
