@@ -30,7 +30,12 @@ export default class ShowRoute extends Route {
         number: params.page,
         size: params.size
       },
-      'user-id': `${params.user_id}`
+      'user-id': `${params.user_id}`,
+
+      facets:
+        'affiliations,certificates,citations,clients,created,downloads,fieldsOfScience,licenses,linkChecksStatus,prefixes,providers,published,registered,resourceTypes,schemaVersions,states,subjects,views',
+
+      'disable-facets': 'false'
     });
 
     // eslint-disable-next-line no-undef
