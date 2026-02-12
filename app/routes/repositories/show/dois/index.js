@@ -20,7 +20,12 @@ export default class IndexRoute extends Route {
         number: params.page,
         size: params.size
       },
-      'client-id': this.modelFor('repositories/show').get('id')
+      'client-id': this.modelFor('repositories/show').get('id'),
+
+      facets:
+        'affiliations,certificates,citations,clients,created,downloads,fieldsOfScience,licenses,linkChecksStatus,prefixes,providers,published,registered,resourceTypes,schemaVersions,states,subjects,views',
+
+      'disable-facets': 'false'
     });
 
     return hash({

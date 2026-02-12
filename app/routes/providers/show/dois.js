@@ -29,7 +29,12 @@ export default class DoisRoute extends Route {
         size: params.size
       },
       'provider-id': providerId,
-      'consortium-id': consortiumId
+      'consortium-id': consortiumId,
+
+      facets:
+        'affiliations,certificates,citations,clients,created,downloads,fieldsOfScience,licenses,linkChecksStatus,prefixes,providers,published,registered,resourceTypes,schemaVersions,states,subjects,views',
+
+      'disable-facets': 'false'
     });
 
     return hash({

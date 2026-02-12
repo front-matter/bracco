@@ -21,7 +21,12 @@ export default class DoisRoute extends Route {
         number: params.page,
         size: params.size
       },
-      'user-id': user.get('id')
+      'user-id': user.get('id'),
+
+      facets:
+        'affiliations,certificates,citations,clients,created,downloads,fieldsOfScience,licenses,linkChecksStatus,prefixes,providers,published,registered,resourceTypes,schemaVersions,states,subjects,views',
+
+      'disable-facets': 'false'
     });
 
     return hash({
