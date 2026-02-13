@@ -29,7 +29,12 @@ export default class IndexRoute extends Route {
         size: params.size
       },
       include: 'client',
-      sort: params.sort || '-updated'
+      sort: params.sort || '-updated',
+
+      facets:
+        'affiliations,certificates,citations,clients,created,downloads,fieldsOfScience,licenses,linkChecksStatus,prefixes,providers,published,registered,resourceTypes,schemaVersions,states,subjects,views',
+
+      'disable-facets': 'false'
     });
 
     return this.store
