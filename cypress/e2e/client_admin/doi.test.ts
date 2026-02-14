@@ -373,10 +373,10 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.get('#url-field').should('have.class', 'is-valid');
 
     // Do the file upload. (just xml for now).  (Wow. That was easy!)
-    cy.fixture('doi_sample_1.xml').then(fileContent => {
+    cy.fixture('doi_v4_7.xml').then(fileContent => {
       cy.get('input#upload-file[type="file"]').attachFile({
           fileContent: fileContent.toString(),
-          fileName: 'doi_sample_1.xml',
+          fileName: 'doi_v4_7.xml',
           mimeType: 'application/xml'
       });
     });
