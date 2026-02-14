@@ -34,7 +34,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.clearAllSessionStorage()
   });
 
-  it.only('is logged in to dois page', () => {
+  it('is logged in to dois page', () => {
     cy.visit(repositoryPath);
 
     cy.contains('.nav-item a', /DOIs/i).click({ force: true });
@@ -43,7 +43,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.get('img.fabrica-logo').should('exist').should('have.attr', 'src').should('include', 'fabrica-logo.svg');
     
     // Has upper right user profile link.
-    cy.get('h2.work').contains('DataCite Test Repository');
+    cy.get('h2.work').contains(repositoryName);
     cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
 
     // Has tabs with correct one activated.
@@ -83,7 +83,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     });
   });
 
-  it('is creating a doi - FORM', () => {
+  it('is creating a doi - FORM - latest metadata - 4.7', () => {
     cy.visit(repositoryPath)
 
     cy.get('#omnipresent-new-doi').click();
@@ -139,7 +139,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     // Causes the aria dropdown to be populated and displayed so that selection can be made.
     cy.get('div#resource-type-general div[role="combobox"]').click({ force: true }).then(($dropdown) => {
       // Makes the selection.
-      cy.get("ul.ember-power-select-options li").contains("Text").click({ force: true });
+      cy.get("ul.ember-power-select-options li").contains("Poster").click({ force: true });
     });
 
     // Set language.
@@ -221,7 +221,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
       });
     });
 
-    // Set related identifier.
+    // Set related identifiers.
     cy.get('#add-related-identifier').click({ force: true }).then(($subform) => {
       cy.get('[data-test-related-identifier]').should('be.visible').type('10.0330/skv0002', { force: true }).then(() => {
         cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
@@ -229,21 +229,27 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
       cy.get('[data-test-related-identifier]').should('be.visible').type('{selectAll}https://doi.org/10.1080/00393630.2018.1504449', { force: true }).then(() => {
         cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
       });
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-related-relation-type] div[role="combobox"]').click({ force: true }).then(() => {
-        // Makes the selection from the dropdown. (Type it.)
-        cy.get('input.ember-power-select-search-input').type('References{enter}', { force: true }).then(() => {
 
-          // Causes the aria dropdown to be populated and displayed so that selection can be made.
-          cy.get('[data-test-related-resource-type] div[role="combobox"]').click({ force: true }).then(() => {
-            // Makes the selection from the dropdown. (Type or click on it.  Since choices change as you type, that is the better method.)
-            cy.get('input.ember-power-select-search-input').first().type('Text{enter}', { force: true }).then(() => {
-              cy.get('#toggle-related-identifiers').should('be.visible').click({ force: true }).then(($toggle) => {
-                cy.get('#toggle-related-identifiers').contains('Show 1 related identifier');
-              });
-            });
-          });
-        });
+      // Set 'relation type' - relatedIdentifier
+      // Causes the aria dropdown to be populated and displayed so that selection can be made.
+      cy.get('[data-test-related-identifiers-form-group] [data-test-related-relation-type] div[role="combobox"]').click({ force: true }).then(() => {
+        // Makes the selection from the dropdown. (Type it.)
+        cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
+      });
+
+      // Set 'relationTypeInformation - relatedIdentifier
+      cy.get('[data-test-relation-type-information-field] input.relation-type-information-field').type('Some relation type information', { force: true });
+
+      // Set 'resourceTypeGeneral' - relatedIdentifier
+      // Causes the aria dropdown to be populated and displayed so that selection can be made.
+      cy.get('[data-test-related-resource-type] div[role="combobox"]').click({ force: true }).then(() => {
+        // Makes the selection from the dropdown. (Type it.)
+        cy.get('input.ember-power-select-search-input').type('Presentation{enter}', { force: true })
+      });
+
+      // Check the toggle
+      cy.get('#toggle-related-identifiers').should('be.visible').click({ force: true }).then(($toggle) => {
+        cy.get('#toggle-related-identifiers').contains('Show 1 related identifier');
       });
     });
 
@@ -277,11 +283,11 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.get('#add-related-item').click({ force: true}).then(($subform) => {
       // Fill in the title
       cy.get('[data-test-related-item-title]').should('be.visible').type('HEPP Yearly', { force: true });
-      // Select the type
+      // Select the type/relatedItemType
       cy.get('[data-test-related-item-type] div[role="combobox"]').click({ force: true}).then(($dropdown) => {
-        cy.get("ul.ember-power-select-options li").contains("Journal").click({ waitForAnimations: true, force: true });
+        cy.get("ul.ember-power-select-options li").contains("Presentation").click({ waitForAnimations: true, force: true });
       })
-      // Add related item identifier
+      // Add relatedItemIdentifier
       cy.get('[data-test-related-item-identifier]').should('be.visible').type('10.12345/example').then(() => {
         // Check that the type is set
         cy.get('[data-test-related-item-identifier-type]').contains('DOI')
@@ -290,6 +296,15 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
         // Check that the type is set
         cy.get('[data-test-related-item-identifier-type]').contains('DOI')
       })
+      // Set 'relation type' - relatedIdentifier
+      // Causes the aria dropdown to be populated and displayed so that selection can be made.
+      cy.get('[data-test-related-items-form-group] div[role="combobox"]').first().click({ force: true }).then(() => {
+        // Makes the selection from the dropdown. (Type it.)
+        cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
+      });
+      // Set 'relationTypeInformation - relatedIdentifier
+      cy.get('[data-test-related-items-form-group] [data-test-relation-type-information-field] input.relation-type-information-field').first().type('Some relation type information', { force: true });
+
       // Check the toggle
       cy.get('#toggle-related-items').should('be.visible').click({ force: true }).then(($toggle) => {
         cy.get('#toggle-related-items').contains('Show 1 related item');
