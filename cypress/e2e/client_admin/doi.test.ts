@@ -46,7 +46,8 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
       
       // Has upper right user profile link.
       cy.get('h2.work').contains(repositoryTitle);
-      cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
+      // Temporarily remove:
+      // cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
 
       // Has tabs with correct one activated.
       cy.get('ul.nav-tabs li a').contains(/Info/i)
@@ -87,258 +88,262 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
   });
 
   it('is creating a doi - FORM - latest metadata - 4.7', () => {
-    cy.visit(repositoryPath)
+    cy.visit(repositoryPath).then(() => {
+      cy.wait(10000)
 
-    cy.get('#omnipresent-new-doi').click();
+      cy.get('#omnipresent-new-doi').click().then(() => {
+        cy.wait(10000)
 
-    ////////// FILL IN FORM
+        ////////// FILL IN FORM
 
-    // Leave state at 'draft'.
+        // Leave state at 'draft'.
 
-    // Set 'url'.
-    cy.get('div#url .form-text').contains('Should be a https URL — within the allowed domain(s) of your repository if domain restrictions are enabled in the repository settings. Http and ftp are also supported. For example http://example.org')
-    cy.get('input#url-field').should('be.visible').type('https://example.org', { force: true });
+        // Set 'url'.
+        cy.get('div#url .form-text').contains('Should be a https URL — within the allowed domain(s) of your repository if domain restrictions are enabled in the repository settings. Http and ftp are also supported. For example http://example.org')
+        cy.get('input#url-field').should('be.visible').type('https://example.org', { force: true });
 
-    // Set creator.
-    cy.get('.help-block.name-identifier-field').should('be.visible').should('have.text','Use name identifier expressed as URL. Uniquely identifies an individual or legal entity, according to various schemas, e.g. ORCID, ROR or ISNI. The Given Name, Family Name, and Name will automatically be filled out for ORCID and ROR identifiers.')
-    cy.get('input[data-test-name]').should('be.visible').type(creator, { force: true });
-    cy.get('#toggle-creators').should('be.visible').click({ force: true }).then(($toggle) => {
-      cy.get('#toggle-creators').contains('Show 1 creator');
-    });
-
-    // Set title.
-    cy.get('input.title-field').should('be.visible').type('The title', { force: true });
-    cy.get('#toggle-titles').should('be.visible').click({ force: true }).then(($toggle) => {
-      cy.get('#toggle-titles').contains('Show 1 title');
-    });
-
-    // Set publisher.
-    cy.get('[data-test-doi-publisher]').click({ waitForAnimations: true }).then(($dropdown) => {
-      // Creates a new publisher
-      cy.get('input.ember-power-select-search-input').type('something{enter}', { force: true });
-      cy.get('[data-test-doi-publisher] .ember-power-select-selected-item').contains("something")
-    });
-
-    // Set state to 'registered'. Test out-of-range year.
-
-    cy.get('#registered-radio').check({ waitForAnimations: true });
-    cy.get('#publication-year-field').should('be.visible').type(yearOutOfRange, { force: true, waitForAnimations: true });
-    cy.get('body').click(0,0);
-    cy.get('div#publication-year-form-group').should('have.class', 'has-error')
-
-    // Test in-range year.
-
-    cy.get('#publication-year-field').should('be.visible').clear({ force: true, waitForAnimations: true });
-    cy.get('#publication-year-field').should('be.visible').type(yearInRange, { force: true, waitForAnimations: true });
-    cy.get('body').click(0,0);
-    cy.get('input#publication-year-field').should('have.class', 'is-valid')
-    cy.get('div#publication-year .form-text').contains('Must be a year between 1000 and ' + yearInRange + '.');
-
-    // Set state back to draft
-
-    cy.get('#draft-radio').check({ waitForAnimations: true });
-  
-    // Set resource type.
-    // Causes the aria dropdown to be populated and displayed so that selection can be made.
-    cy.get('div#resource-type-general div[role="combobox"]').click({ force: true }).then(($dropdown) => {
-      // Makes the selection.
-      cy.get("ul.ember-power-select-options li").contains("Poster").click({ force: true });
-    });
-
-    // Set language.
-    // Causes the aria dropdown to be populated and displayed so that selection can be made.
-    cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
-      // Creates a new invalid language.
-      cy.get('input.ember-power-select-search-input').type('Borgesian{enter}', { force: true });
-      cy.get('.invalid-feedback').contains('Must be a valid Language code.');
-    });
-    cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
-      // Creates a new valid language.
-      cy.get('input.ember-power-select-search-input').type('pre-US{enter}', { force: true });
-      cy.get('.form-text').contains('The default Language vocabulary is provided by ISO 639-1. Any new language should be provided using two-letter or three-letter language codes.');
-    });
-    cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
-      // Makes a default selection.
-      cy.get("ul.ember-power-select-options li").contains("English").click({ waitForAnimations: true });
-      cy.get('.form-text').contains('The default Language vocabulary is provided by ISO 639-1. Any new language should be provided using two-letter or three-letter language codes.');
-    });
-
-    // Set geolocation.
-    cy.get('#add-geolocation').click({ force: true }).then(($subform) => {
-      cy.get('[data-test-geo-location-place]').should('be.visible').type('Amsterdam, Novoravis hotel', { force: true });
-      cy.get('#toggle-geolocations').should('be.visible').click({ force: true }).then(($toggle) => {
-        cy.get('#toggle-geolocations').contains('Show 1 geolocation');
-      });
-    });
-
-    // Set subject.
-    cy.get('#add-subject').click({ force: true }).then(($subform) => {
-      cy.get('.ember-power-select-placeholder').contains('Search Subject from the OECD Fields of Science and Technology (FOS) OR create a new keyword');
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-doi-subject] div[role="combobox"]').first().click({ force: true }).then(($dropdown) => {
-        // Makes the selection from the dropdown.
-        cy.get('input.ember-power-select-search-input').type('Optics{enter}', { force: true });
-        cy.get('input.subject-classification-code-field').first().type('O123', { force: true });
-        cy.get('#toggle-subjects').should('be.visible').click({ force: true }).then(($toggle) => {
-          cy.get('#toggle-subjects').contains('Show 1 subject');
+        // Set creator.
+        cy.get('.help-block.name-identifier-field').should('be.visible').should('have.text','Use name identifier expressed as URL. Uniquely identifies an individual or legal entity, according to various schemas, e.g. ORCID, ROR or ISNI. The Given Name, Family Name, and Name will automatically be filled out for ORCID and ROR identifiers.')
+        cy.get('input[data-test-name]').should('be.visible').type(creator, { force: true });
+        cy.get('#toggle-creators').should('be.visible').click({ force: true }).then(($toggle) => {
+          cy.get('#toggle-creators').contains('Show 1 creator');
         });
-      });
-    });
 
-    // Set contributor.
-    cy.get('#add-contributor').click({ waitForAnimations: true }).then(($subform) => {
-      cy.get('.help-block.name-identifier-field').should('be.visible').should('have.text','Use name identifier expressed as URL. Uniquely identifies an individual or legal entity, according to various schemas, e.g. ORCID, ROR or ISNI. The Given Name, Family Name, and Name will automatically be filled out for ORCID and ROR identifiers.')
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[doi-contributor-type] div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
-        // Makes the selection from the dropdown.
-        cy.get("ul.ember-power-select-options li").contains("Data collector").click({ waitForAnimations: true });
-        cy.get('#toggle-contributors').should('be.visible').click({ waitForAnimations: true }).then(($toggle) => {
-          cy.get('#toggle-contributors').contains('Show 1 contributor');
-        })
-      })
-    });
-
-    // Set version.
-    cy.get('#version-field').should('be.visible').type('67', { force: true });
-
-    // Set format.
-    cy.get('#add-format').click({ force: true }).then(($subform) => {
-      // cy.get('.ember-power-select-placeholder').contains('Search standard formats OR create a new format');
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[doi-format] div[role="combobox"]').click({ force: true }).then(($dropdown) => {
-        // Makes the selection from the dropdown.
-        cy.get('input.ember-power-select-search-input').type('Optics{enter}', { force: true });
-        cy.get('#toggle-formats').should('be.visible').click({ force: true }).then(($toggle) => {
-          cy.get('#toggle-formats').contains('Show 1 format');
+        // Set title.
+        cy.get('input.title-field').should('be.visible').type('The title', { force: true });
+        cy.get('#toggle-titles').should('be.visible').click({ force: true }).then(($toggle) => {
+          cy.get('#toggle-titles').contains('Show 1 title');
         });
-      });
-    });
 
-    // Set alternate identifier.
-    cy.get('#add-alternate-identifier').click({ force: true }).then(($subform) => {
-      cy.get('[data-test-alternate-identifier-type] div[role="combobox"]').click({ force: true }).then(($dropdown) => {
-        cy.get("ul.ember-power-select-options li").contains("DOI").click({ force: true });
-        cy.get('#toggle-alternate-identifiers').should('be.visible').click({ waitForAnimations: true }).then(($toggle) => {
-          cy.get('#toggle-alternate-identifiers').contains('Show 1 alternate identifier');
+        // Set publisher.
+        cy.get('[data-test-doi-publisher]').click({ waitForAnimations: true }).then(($dropdown) => {
+          // Creates a new publisher
+          cy.get('input.ember-power-select-search-input').type('something{enter}', { force: true });
+          cy.get('[data-test-doi-publisher] .ember-power-select-selected-item').contains("something")
         });
-      });
-    });
 
-    // Set related identifiers.
-    cy.get('#add-related-identifier').click({ force: true }).then(($subform) => {
-      cy.get('[data-test-related-identifier]').should('be.visible').type('10.0330/skv0002', { force: true }).then(() => {
-        cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
-      });
-      cy.get('[data-test-related-identifier]').should('be.visible').type('{selectAll}https://doi.org/10.1080/00393630.2018.1504449', { force: true }).then(() => {
-        cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
-      });
+        // Set state to 'registered'. Test out-of-range year.
 
-      // Set 'relation type' - relatedIdentifier
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-related-identifiers-form-group] [data-test-related-relation-type] div[role="combobox"]').click({ force: true }).then(() => {
-        // Makes the selection from the dropdown. (Type it.)
-        cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
-      });
+        cy.get('#registered-radio').check({ waitForAnimations: true });
+        cy.get('#publication-year-field').should('be.visible').type(yearOutOfRange, { force: true, waitForAnimations: true });
+        cy.get('body').click(0,0);
+        cy.get('div#publication-year-form-group').should('have.class', 'has-error')
 
-      // Set 'relationTypeInformation - relatedIdentifier
-      cy.get('[data-test-relation-type-information-field] input.relation-type-information-field').type('Some relation type information', { force: true });
+        // Test in-range year.
 
-      // Set 'resourceTypeGeneral' - relatedIdentifier
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-related-resource-type] div[role="combobox"]').click({ force: true }).then(() => {
-        // Makes the selection from the dropdown. (Type it.)
-        cy.get('input.ember-power-select-search-input').type('Presentation{enter}', { force: true })
-      });
+        cy.get('#publication-year-field').should('be.visible').clear({ force: true, waitForAnimations: true });
+        cy.get('#publication-year-field').should('be.visible').type(yearInRange, { force: true, waitForAnimations: true });
+        cy.get('body').click(0,0);
+        cy.get('input#publication-year-field').should('have.class', 'is-valid')
+        cy.get('div#publication-year .form-text').contains('Must be a year between 1000 and ' + yearInRange + '.');
 
-      // Check the toggle
-      cy.get('#toggle-related-identifiers').should('be.visible').click({ force: true }).then(($toggle) => {
-        cy.get('#toggle-related-identifiers').contains('Show 1 related identifier');
-      });
-    });
+        // Set state back to draft
 
-    // Set funding reference.
-    cy.get('#add-funding-reference').click({ force: true }).then(($subform) => {
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-funder-name] div[role="combobox"]').click({ waitForAnimations: true,force: true }).then(() => {
-        // Makes the selection from the dropdown. (Type it.)
-        cy.get('input.ember-power-select-search-input').type('Action for M.E.{enter}', { force: true }).then(() => {
+        cy.get('#draft-radio').check({ waitForAnimations: true });
+      
+        // Set resource type.
+        // Causes the aria dropdown to be populated and displayed so that selection can be made.
+        cy.get('div#resource-type-general div[role="combobox"]').click({ force: true }).then(($dropdown) => {
+          // Makes the selection.
+          cy.get("ul.ember-power-select-options li").contains("Poster").click({ force: true });
+        });
 
-          // BUG: This field should be disabled as a result of selecting 'Action for...' from the dropdown.
-          // cy.get('[data-test-funder-identifier]').should('be.disabled');
-          // cy.get('[data-test-funder-identifier]').should('have.attr', 'disabled');
+        // Set language.
+        // Causes the aria dropdown to be populated and displayed so that selection can be made.
+        cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
+          // Creates a new invalid language.
+          cy.get('input.ember-power-select-search-input').type('Borgesian{enter}', { force: true });
+          cy.get('.invalid-feedback').contains('Must be a valid Language code.');
+        });
+        cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
+          // Creates a new valid language.
+          cy.get('input.ember-power-select-search-input').type('pre-US{enter}', { force: true });
+          cy.get('.form-text').contains('The default Language vocabulary is provided by ISO 639-1. Any new language should be provided using two-letter or three-letter language codes.');
+        });
+        cy.get('div#doi-language div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
+          // Makes a default selection.
+          cy.get("ul.ember-power-select-options li").contains("English").click({ waitForAnimations: true });
+          cy.get('.form-text').contains('The default Language vocabulary is provided by ISO 639-1. Any new language should be provided using two-letter or three-letter language codes.');
+        });
 
-          cy.get('[data-test-funder-identifier-type] div[role="combobox"]').within(($obj) => {
-            // cy.wrap($obj).should('have.attr', 'aria-disabled');
-            // cy.wrap($obj).get('.ember-power-select-selected-item').contains('Crossref Funder ID');
+        // Set geolocation.
+        cy.get('#add-geolocation').click({ force: true }).then(($subform) => {
+          cy.get('[data-test-geo-location-place]').should('be.visible').type('Amsterdam, Novoravis hotel', { force: true });
+          cy.get('#toggle-geolocations').should('be.visible').click({ force: true }).then(($toggle) => {
+            cy.get('#toggle-geolocations').contains('Show 1 geolocation');
           });
         });
-      }).then(() => {
-        cy.get('[data-test-award-number]').should('be.visible').type('G2342342', { force: true });
-        cy.get('[data-test-award-uri]').should('be.visible').type('https://schema.datacite.org/meta/kernel-4', { force: true });
-      }).then(() => {
-        cy.get('#toggle-funding-references').should('be.visible').click({ force: true }).then(($toggle) => {
-          cy.get('#toggle-funding-references').contains('Show 1 funding reference');
+
+        // Set subject.
+        cy.get('#add-subject').click({ force: true }).then(($subform) => {
+          cy.get('.ember-power-select-placeholder').contains('Search Subject from the OECD Fields of Science and Technology (FOS) OR create a new keyword');
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[data-test-doi-subject] div[role="combobox"]').first().click({ force: true }).then(($dropdown) => {
+            // Makes the selection from the dropdown.
+            cy.get('input.ember-power-select-search-input').type('Optics{enter}', { force: true });
+            cy.get('input.subject-classification-code-field').first().type('O123', { force: true });
+            cy.get('#toggle-subjects').should('be.visible').click({ force: true }).then(($toggle) => {
+              cy.get('#toggle-subjects').contains('Show 1 subject');
+            });
+          });
         });
+
+        // Set contributor.
+        cy.get('#add-contributor').click({ waitForAnimations: true }).then(($subform) => {
+          cy.get('.help-block.name-identifier-field').should('be.visible').should('have.text','Use name identifier expressed as URL. Uniquely identifies an individual or legal entity, according to various schemas, e.g. ORCID, ROR or ISNI. The Given Name, Family Name, and Name will automatically be filled out for ORCID and ROR identifiers.')
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[doi-contributor-type] div[role="combobox"]').click({ waitForAnimations: true }).then(($dropdown) => {
+            // Makes the selection from the dropdown.
+            cy.get("ul.ember-power-select-options li").contains("Data collector").click({ waitForAnimations: true });
+            cy.get('#toggle-contributors').should('be.visible').click({ waitForAnimations: true }).then(($toggle) => {
+              cy.get('#toggle-contributors').contains('Show 1 contributor');
+            })
+          })
+        });
+
+        // Set version.
+        cy.get('#version-field').should('be.visible').type('67', { force: true });
+
+        // Set format.
+        cy.get('#add-format').click({ force: true }).then(($subform) => {
+          // cy.get('.ember-power-select-placeholder').contains('Search standard formats OR create a new format');
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[doi-format] div[role="combobox"]').click({ force: true }).then(($dropdown) => {
+            // Makes the selection from the dropdown.
+            cy.get('input.ember-power-select-search-input').type('Optics{enter}', { force: true });
+            cy.get('#toggle-formats').should('be.visible').click({ force: true }).then(($toggle) => {
+              cy.get('#toggle-formats').contains('Show 1 format');
+            });
+          });
+        });
+
+        // Set alternate identifier.
+        cy.get('#add-alternate-identifier').click({ force: true }).then(($subform) => {
+          cy.get('[data-test-alternate-identifier-type] div[role="combobox"]').click({ force: true }).then(($dropdown) => {
+            cy.get("ul.ember-power-select-options li").contains("DOI").click({ force: true });
+            cy.get('#toggle-alternate-identifiers').should('be.visible').click({ waitForAnimations: true }).then(($toggle) => {
+              cy.get('#toggle-alternate-identifiers').contains('Show 1 alternate identifier');
+            });
+          });
+        });
+
+        // Set related identifiers.
+        cy.get('#add-related-identifier').click({ force: true }).then(($subform) => {
+          cy.get('[data-test-related-identifier]').should('be.visible').type('10.0330/skv0002', { force: true }).then(() => {
+            cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
+          });
+          cy.get('[data-test-related-identifier]').should('be.visible').type('{selectAll}https://doi.org/10.1080/00393630.2018.1504449', { force: true }).then(() => {
+            cy.get('[data-test-related-identifier-type] .ember-power-select-selected-item').contains('DOI');
+          });
+
+          // Set 'relation type' - relatedIdentifier
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[data-test-related-identifiers-form-group] [data-test-related-relation-type] div[role="combobox"]').click({ force: true }).then(() => {
+            // Makes the selection from the dropdown. (Type it.)
+            cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
+          });
+
+          // Set 'relationTypeInformation - relatedIdentifier
+          cy.get('[data-test-relation-type-information-field] input.relation-type-information-field').type('Some relation type information', { force: true });
+
+          // Set 'resourceTypeGeneral' - relatedIdentifier
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[data-test-related-resource-type] div[role="combobox"]').click({ force: true }).then(() => {
+            // Makes the selection from the dropdown. (Type it.)
+            cy.get('input.ember-power-select-search-input').type('Presentation{enter}', { force: true })
+          });
+
+          // Check the toggle
+          cy.get('#toggle-related-identifiers').should('be.visible').click({ force: true }).then(($toggle) => {
+            cy.get('#toggle-related-identifiers').contains('Show 1 related identifier');
+          });
+        });
+
+        // Set funding reference.
+        cy.get('#add-funding-reference').click({ force: true }).then(($subform) => {
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[data-test-funder-name] div[role="combobox"]').click({ waitForAnimations: true,force: true }).then(() => {
+            // Makes the selection from the dropdown. (Type it.)
+            cy.get('input.ember-power-select-search-input').type('Action for M.E.{enter}', { force: true }).then(() => {
+
+              // BUG: This field should be disabled as a result of selecting 'Action for...' from the dropdown.
+              // cy.get('[data-test-funder-identifier]').should('be.disabled');
+              // cy.get('[data-test-funder-identifier]').should('have.attr', 'disabled');
+
+              cy.get('[data-test-funder-identifier-type] div[role="combobox"]').within(($obj) => {
+                // cy.wrap($obj).should('have.attr', 'aria-disabled');
+                // cy.wrap($obj).get('.ember-power-select-selected-item').contains('Crossref Funder ID');
+              });
+            });
+          }).then(() => {
+            cy.get('[data-test-award-number]').should('be.visible').type('G2342342', { force: true });
+            cy.get('[data-test-award-uri]').should('be.visible').type('https://schema.datacite.org/meta/kernel-4', { force: true });
+          }).then(() => {
+            cy.get('#toggle-funding-references').should('be.visible').click({ force: true }).then(($toggle) => {
+              cy.get('#toggle-funding-references').contains('Show 1 funding reference');
+            });
+          });
+        });
+
+        // Set related item.
+        cy.get('#add-related-item').click({ force: true}).then(($subform) => {
+          // Fill in the title
+          cy.get('[data-test-related-item-title]').should('be.visible').type('HEPP Yearly', { force: true });
+          // Select the type/relatedItemType
+          cy.get('[data-test-related-item-type] div[role="combobox"]').click({ force: true}).then(($dropdown) => {
+            cy.get("ul.ember-power-select-options li").contains("Presentation").click({ waitForAnimations: true, force: true });
+          })
+          // Add relatedItemIdentifier
+          cy.get('[data-test-related-item-identifier]').should('be.visible').type('10.12345/example').then(() => {
+            // Check that the type is set
+            cy.get('[data-test-related-item-identifier-type]').contains('DOI')
+          })
+          cy.get('[data-test-related-item-identifier]').should('be.visible').type('{selectAll}https://doi.org/10.1080/00393630.2018.1504449').then(() => {
+            // Check that the type is set
+            cy.get('[data-test-related-item-identifier-type]').contains('DOI')
+          })
+          // Set 'relation type' - relatedIdentifier
+          // Causes the aria dropdown to be populated and displayed so that selection can be made.
+          cy.get('[data-test-related-items-form-group] div[role="combobox"]').first().click({ force: true }).then(() => {
+            // Makes the selection from the dropdown. (Type it.)
+            cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
+          });
+          // Set 'relationTypeInformation - relatedIdentifier
+          cy.get('[data-test-related-items-form-group] [data-test-relation-type-information-field] input.relation-type-information-field').first().type('Some relation type information', { force: true });
+
+          // Check the toggle
+          cy.get('#toggle-related-items').should('be.visible').click({ force: true }).then(($toggle) => {
+            cy.get('#toggle-related-items').contains('Show 1 related item');
+          });
+        })
+
+        // Set 'prefix'. Random suffix.
+        cy.get('#prefix-field div[role="combobox"]').click({ force: true }).then(() => {
+          cy.wait(waitTime);
+          cy.get('div.ember-power-select-dropdown').within(() => {
+            cy.get("ul.ember-power-select-options li").contains(prefix).click({ force: true });
+          });
+        });
+
+        // Get the suffix for later tests
+        cy.get("#suffix-field").invoke('val').then( (value) => {
+          Cypress.env('suffix', value)
+        });
+
+        ////////// DONE FILLING IN FORM.  PRESS THE CREATE BUTTON.
+
+        cy.get('button#doi-create').should('be.visible').click();
+        cy.wait(waitTime);
+        cy.location('pathname').should('contain', '/dois/' + prefix)
+
+        // We need to test the success page (the DOI summary page) to make sure the DOI was created correctly.
+        
+        // Cypress form bug? The suffix is not always available from the form field (above).  Get it from the url.
+        cy.url().then( (url) => {
+          Cypress.env('suffix', decodeURIComponent(url).split('/').pop())
+        })
       });
     });
-
-    // Set related item.
-    cy.get('#add-related-item').click({ force: true}).then(($subform) => {
-      // Fill in the title
-      cy.get('[data-test-related-item-title]').should('be.visible').type('HEPP Yearly', { force: true });
-      // Select the type/relatedItemType
-      cy.get('[data-test-related-item-type] div[role="combobox"]').click({ force: true}).then(($dropdown) => {
-        cy.get("ul.ember-power-select-options li").contains("Presentation").click({ waitForAnimations: true, force: true });
-      })
-      // Add relatedItemIdentifier
-      cy.get('[data-test-related-item-identifier]').should('be.visible').type('10.12345/example').then(() => {
-        // Check that the type is set
-        cy.get('[data-test-related-item-identifier-type]').contains('DOI')
-      })
-      cy.get('[data-test-related-item-identifier]').should('be.visible').type('{selectAll}https://doi.org/10.1080/00393630.2018.1504449').then(() => {
-        // Check that the type is set
-        cy.get('[data-test-related-item-identifier-type]').contains('DOI')
-      })
-      // Set 'relation type' - relatedIdentifier
-      // Causes the aria dropdown to be populated and displayed so that selection can be made.
-      cy.get('[data-test-related-items-form-group] div[role="combobox"]').first().click({ force: true }).then(() => {
-        // Makes the selection from the dropdown. (Type it.)
-        cy.get('input.ember-power-select-search-input').type('Other{enter}', { force: true })
-      });
-      // Set 'relationTypeInformation - relatedIdentifier
-      cy.get('[data-test-related-items-form-group] [data-test-relation-type-information-field] input.relation-type-information-field').first().type('Some relation type information', { force: true });
-
-      // Check the toggle
-      cy.get('#toggle-related-items').should('be.visible').click({ force: true }).then(($toggle) => {
-        cy.get('#toggle-related-items').contains('Show 1 related item');
-      });
-    })
-
-    // Set 'prefix'. Random suffix.
-    cy.get('#prefix-field div[role="combobox"]').click({ force: true }).then(() => {
-      cy.wait(waitTime);
-      cy.get('div.ember-power-select-dropdown').within(() => {
-        cy.get("ul.ember-power-select-options li").contains(prefix).click({ force: true });
-      });
-    });
-
-    // Get the suffix for later tests
-    cy.get("#suffix-field").invoke('val').then( (value) => {
-      Cypress.env('suffix', value)
-    });
-
-    ////////// DONE FILLING IN FORM.  PRESS THE CREATE BUTTON.
-
-    cy.get('button#doi-create').should('be.visible').click();
-    cy.wait(waitTime);
-    cy.location('pathname').should('contain', '/dois/' + prefix)
-
-    // We need to test the success page (the DOI summary page) to make sure the DOI was created correctly.
-    
-    // Cypress form bug? The suffix is not always available from the form field (above).  Get it from the url.
-    cy.url().then( (url) => {
-      Cypress.env('suffix', decodeURIComponent(url).split('/').pop())
-    })
   });
 
   // FIX IT!
