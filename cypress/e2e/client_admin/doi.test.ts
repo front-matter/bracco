@@ -35,52 +35,54 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.clearAllSessionStorage()
   });
 
-  it('is logged in to dois page', () => {
-    cy.visit(repositoryPath + '/dois');
+  it.only('is logged in to dois page', () => {
+    cy.visit(repositoryPath + '/dois').then(() => {
+      cy.wait(10000)
 
-    cy.contains('.nav-item a', /DOIs/i).click({ force: true });
+      cy.contains('.nav-item a', /DOIs/i).click({ force: true });
 
-    // Has Fabrica logo
-    cy.get('img.fabrica-logo').should('exist').should('have.attr', 'src').should('include', 'fabrica-logo.svg');
-    
-    // Has upper right user profile link.
-    cy.get('h2.work').contains(repositoryTitle);
-    cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
+      // Has Fabrica logo
+      cy.get('img.fabrica-logo').should('exist').should('have.attr', 'src').should('include', 'fabrica-logo.svg');
+      
+      // Has upper right user profile link.
+      cy.get('h2.work').contains(repositoryTitle);
+      cy.get('a#account_menu_link').should('contain', Cypress.env('client_admin_username'));
 
-    // Has tabs with correct one activated.
-    cy.get('ul.nav-tabs li a').contains(/Info/i)
-      .and('have.attr', 'href').and('include', repositoryPath);
-    cy.get('ul.nav-tabs li a').contains(/Settings/i)
-      .and('have.attr', 'href').and('include', repositoryPath + '/settings');
-    cy.get('ul.nav-tabs li a').contains(/Prefixes/i)
-      .and('have.attr', 'href').and('include', repositoryPath + '/prefixes');
-    cy.get('ul.nav-tabs li.active a').contains(/DOIs/i)
-      .and('have.attr', 'href').and('include', repositoryPath + '/dois');
-    // Has left sidebar buttons.
-    cy.get('[data-test-left-sidebar]').should('be.visible').within(($sidebar) => {
-      // Create DOI button - would like to do more testing but seems impossible in Cypress.
-      cy.get('.create-doi-button').contains(/Create DOI/i);
-      cy.get('.create-doi-button button.dropdown-toggle').click({ force: true }).then(($obj) => {
-        //cy.get('.create-doi-button ul.dropdown-menu')
-        //cy.get('.create-doi-button ul.dropdown-menu ul li a').contains(/DOI\s*Form/i);
-        //cy.get('.create-doi-button ul.dropdown-menu ul li a').contains(/File\s*Upload/i);
+      // Has tabs with correct one activated.
+      cy.get('ul.nav-tabs li a').contains(/Info/i)
+        .and('have.attr', 'href').and('include', repositoryPath);
+      cy.get('ul.nav-tabs li a').contains(/Settings/i)
+        .and('have.attr', 'href').and('include', repositoryPath + '/settings');
+      cy.get('ul.nav-tabs li a').contains(/Prefixes/i)
+        .and('have.attr', 'href').and('include', repositoryPath + '/prefixes');
+      cy.get('ul.nav-tabs li.active a').contains(/DOIs/i)
+        .and('have.attr', 'href').and('include', repositoryPath + '/dois');
+      // Has left sidebar buttons.
+      cy.get('[data-test-left-sidebar]').should('be.visible').within(($sidebar) => {
+        // Create DOI button - would like to do more testing but seems impossible in Cypress.
+        cy.get('.create-doi-button').contains(/Create DOI/i);
+        cy.get('.create-doi-button button.dropdown-toggle').click({ force: true }).then(($obj) => {
+          //cy.get('.create-doi-button ul.dropdown-menu')
+          //cy.get('.create-doi-button ul.dropdown-menu ul li a').contains(/DOI\s*Form/i);
+          //cy.get('.create-doi-button ul.dropdown-menu ul li a').contains(/File\s*Upload/i);
+        });
       });
-    });
-    cy.get(('#no-doi-permissions')).should('not.exist');
+      cy.get(('#no-doi-permissions')).should('not.exist');
 
-    cy.get('button.export-basic-metadata').should('exist');
+      cy.get('button.export-basic-metadata').should('exist');
 
-    // Has left sidebar facets.
-    cy.get('.facets h4').contains(/Resource\s*Type/i);
-    cy.get('.facets h4').contains(/Year\s*created/i);
-    cy.get('.facets h4').contains(/Prefix/i);
-    cy.get('.facets h4').contains(/Schema\s*Version/i);
+      // Has left sidebar facets.
+      cy.get('.facets h4').contains(/Resource\s*Type/i);
+      cy.get('.facets h4').contains(/Year\s*created/i);
+      cy.get('.facets h4').contains(/Prefix/i);
+      cy.get('.facets h4').contains(/Schema\s*Version/i);
 
-    // Has search form
-    cy.get('form #search').within(($searchBar) => {
-      cy.get('input[name="query"]')
-        .and('have.attr', 'placeholder').should('match', /Type\sto\ssearch\.\sFor\sexample\s10\.4121\/17185607\.v1/i);
-      cy.get('button').contains(/Search/i);
+      // Has search form
+      cy.get('form #search').within(($searchBar) => {
+        cy.get('input[name="query"]')
+          .and('have.attr', 'placeholder').should('match', /Type\sto\ssearch\.\sFor\sexample\s10\.4121\/17185607\.v1/i);
+        cy.get('button').contains(/Search/i);
+      });
     });
   });
 
@@ -355,46 +357,49 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
   });
   */
 
-  it('is creating a doi - FILE UPLOAD', () => {
-    cy.visit(repositoryPath)
+  it('is creating a doi - FILE UPLOAD - latest metadata - v4.7',() => {
+    cy.visit(repositoryPath).then(() => {
+      cy.wait(10000)
 
-    cy.get('div.create-doi-button button.dropdown-toggle').click({ force: true })
-    cy.contains('File Upload').click({ force: true })
+      cy.get('div.create-doi-button button.dropdown-toggle').click({ force: true })
+      cy.contains('File Upload').click({ force: true })
 
-    ////////// FILL IN FORM
+      ////////// FILL IN FORM
 
-    // Leave state at 'draft'.
+      // Leave state at 'draft'.
 
-    // Set 'url'.
-    cy.wait(waitTime);
-    cy.get('div#url .form-text').contains('Should be a https URL — within the allowed domain(s) of your repository if domain restrictions are enabled in the repository settings. Http and ftp are also supported. For example http://example.org')
-    cy.get('input#url-field').should('be.visible').type('https://example.org', { force: true })
-      .clickOutside();
-    cy.get('#url-field').should('have.class', 'is-valid');
-
-    // Do the file upload. (just xml for now).  (Wow. That was easy!)
-    cy.fixture('doi_v4_7.xml').then(fileContent => {
-      cy.get('input#upload-file[type="file"]').attachFile({
-          fileContent: fileContent.toString(),
-          fileName: 'doi_v4_7.xml',
-          mimeType: 'application/xml'
-      });
-    });
-
-    // Set 'prefix'. Random suffix.
-    cy.get('#prefix-field div[role="combobox"]').click({ force: true }).then(() => {
+      // Set 'url'.
       cy.wait(waitTime);
-      cy.get('div.ember-power-select-dropdown').within(() => {
-        cy.get("ul.ember-power-select-options li").contains(prefix).click({ force: true });
+      cy.get('div#url .form-text').contains('Should be a https URL — within the allowed domain(s) of your repository if domain restrictions are enabled in the repository settings. Http and ftp are also supported. For example http://example.org')
+      cy.get('input#url-field').should('be.visible').type('https://example.org', { force: true })
+        .clickOutside();
+      cy.get('#url-field').should('have.class', 'is-valid');
+
+      // Do the file upload. (just xml for now).  (Wow. That was easy!)
+      cy.fixture('doi_v4_7.xml').then(fileContent => {
+        cy.get('input#upload-file[type="file"]').attachFile({
+            fileContent: fileContent.toString(),
+            fileName: 'doi_v4_7.xml',
+            mimeType: 'application/xml'
+        });
       });
-    });
 
-    ////////// DONE FILLING IN FORM.  PRESS THE CREATE BUTTON.
+      // Set 'prefix'. Random suffix.
+      cy.get('#prefix-field div[role="combobox"]').click({ force: true }).then(() => {
+        cy.wait(waitTime);
+        cy.get('div.ember-power-select-dropdown').within(() => {
+          cy.get("ul.ember-power-select-options li").contains(prefix).click({ force: true });
+        });
+      });
 
-    cy.wait(waitTime);
-    cy.get('button#doi-create').should('be.visible').click();
-    cy.wait(waitTime);
-    cy.location('pathname').should('contain', '/dois/' + prefix)
+      ////////// DONE FILLING IN FORM.  PRESS THE CREATE BUTTON.
+
+      cy.wait(waitTime);
+      cy.get('button#doi-create').should('be.visible').click();
+      cy.wait(waitTime);
+      cy.location('pathname').should('contain', '/dois/' + prefix)
+
+    })
   });
 
   it('is deleting a doi', () => {
