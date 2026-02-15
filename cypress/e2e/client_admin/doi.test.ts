@@ -35,7 +35,7 @@ describe('ACCEPTANCE: CLIENT_ADMIN | DOIS', () => {
     cy.clearAllSessionStorage()
   });
 
-  it.only('is logged in to dois page', () => {
+  it('is logged in to dois page', () => {
     cy.visit(repositoryPath + '/dois').then(() => {
       cy.wait(10000)
 
