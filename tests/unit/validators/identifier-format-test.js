@@ -3,15 +3,15 @@ import { setupTest } from 'ember-qunit';
 
 let options, builtOptions, validator, message;
 
-module('Unit | Validator | identifier-format', function (hooks) {
+module('Unit | Validator | format', function (hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function () {
-    validator = this.owner.lookup('validator:identifier-format');
+    validator = this.owner.lookup('validator:format');
   });
 
   test('it works', function (assert) {
-    let validator = this.owner.lookup('validator:identifier-format');
+    let validator = this.owner.lookup('validator:format');
     assert.ok(validator);
   });
 
