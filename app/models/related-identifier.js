@@ -25,7 +25,7 @@ const Validations = buildValidations({
     //     return this.model.get('state') === 'draft' || ![ 'PURL','URL' ].includes(this.model.get('relatedIdentifierType'));
     //   }),
     // }),
-    validator('format', {
+    validator('identifier-format', {
       allowBlank: true,
       dependentKeys: ['model.relatedIdentifierType', 'model.relationType'],
       disabled: computed('model.relatedIdentifier', function () {
