@@ -25,9 +25,9 @@ const Validations = buildValidations({
     //     return this.model.get('state') === 'draft' || ![ 'PURL','URL' ].includes(this.model.get('relatedIdentifierType'));
     //   }),
     // }),
-    validator('identifier-format', {
+    validator('format', {
       allowBlank: true,
-      dependentKeys: ['model.relatedIdentifierType'],
+      dependentKeys: ['model.relatedIdentifierType', 'model.relationType'],
       disabled: computed('model.relatedIdentifier', function () {
         return isBlank(this.model.get('relatedIdentifier'));
       })
@@ -42,7 +42,7 @@ const Validations = buildValidations({
         return (
           this.model.get('state') === 'draft' ||
           isBlank(this.model.get('relatedIdentifier'))
-        );
+        ); 
       })
     })
   ],
@@ -50,18 +50,6 @@ const Validations = buildValidations({
     validator('presence', {
       presence: true,
       message: 'Please enter a Relation Type for the Related Identifier.',
-      disabled: computed('model.{relatedIdentifier,state}', function () {
-        return (
-          this.model.get('state') === 'draft' ||
-          isBlank(this.model.get('relatedIdentifier'))
-        );
-      })
-    })
-  ],
-  relationTypeInformation: [
-    validator('presence', {
-      presence: true,
-      message: 'Please enter text to support the Relation Type.',
       disabled: computed('model.{relatedIdentifier,state}', function () {
         return (
           this.model.get('state') === 'draft' ||
