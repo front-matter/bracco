@@ -133,7 +133,7 @@ div[doi-format].power-select-fragment .ember-basic-dropdown-trigger div.ember-vi
 /* BASE DOI FROM assets.datacite.org/doi.css (based on bootstrap 3.4) - this must be fixed. */
 
 /*
- * See migration documents: 
+ * See migration documents:
  * - https://getbootstrap.com/docs/4.0/migration/#forms-1
  * - https://getbootstrap.com/docs/5.0/migration/
  */
@@ -150,7 +150,7 @@ div[doi-format].power-select-fragment .ember-basic-dropdown-trigger div.ember-vi
 }
 
 .form-group.has-error input, .form-group.has-error select {
-  color: #e74c3c; 
+  color: #e74c3c;
   border-color: #e74c3c;
 }
 
@@ -184,13 +184,13 @@ div[doi-format].power-select-fragment .ember-basic-dropdown-trigger div.ember-vi
 }
 
 .form-group input.is-valid, .form-group select.is-valid {
-  color: #2ecc71; 
+  color: #2ecc71;
   border-color: #2ecc71;
 }
 
 /* Fragile - next sibiling */
 .form-group input.is-valid + div.form-text{
-  color: #2ecc71; 
+  color: #2ecc71;
 }
 
 #doi-edit-form div#doi, #doi-modify-form-file-upload div#doi {
@@ -416,7 +416,7 @@ div.progress {
   width: 100% !important;
 }
 
-.power-select-fragment[doi-subject], 
+.power-select-fragment[doi-subject],
 .power-select-fragment[doi-affiliation],
 .power-select-fragment[doi-resource-type],
 .power-select-fragment[doi-title-type],
@@ -576,4 +576,18 @@ div[doi-publisher] > div {
 .icon-landing {
   display: flex;
   padding-bottom: 0.5em;
+}
+/* Footer Color for accessibility */
+
+.footer {
+  color: #243B54;
+}
+
+.footer a, .footer a:hover, .footer a:visited {
+  color: #243B54;
+}
+
+.footer .color-description {
+  font-size: 18px;
+  color: #243B54;
 }
