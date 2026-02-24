@@ -27,7 +27,7 @@ const Validations = buildValidations({
     // }),
     validator('identifier-format', {
       allowBlank: true,
-      dependentKeys: ['model.relatedIdentifierType', 'model.relationType'],
+      dependentKeys: ['model.relatedIdentifierType'],
       disabled: computed('model.relatedIdentifier', function () {
         return isBlank(this.model.get('relatedIdentifier'));
       })
@@ -42,7 +42,7 @@ const Validations = buildValidations({
         return (
           this.model.get('state') === 'draft' ||
           isBlank(this.model.get('relatedIdentifier'))
-        ); 
+        );
       })
     })
   ],
@@ -85,9 +85,6 @@ export default class RelatedIdentifier extends Fragment.extend(Validations) {
 
   @attr('string', { defaultValue: null })
   relationType;
-
-  @attr('string', { defaultValue: null })
-  relationTypeInformation;
 
   @attr('string', { defaultValue: null })
   relatedMetadataScheme;
