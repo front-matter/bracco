@@ -172,6 +172,11 @@ export default class DoiRelatedIdentifier extends Component {
     const bibcode = /\d{4}[A-Za-z\.\&]{5}[\w\.]{4}[ELPQ-Z\.][\d\.]{4}[A-Z]/;
     const urn = /^urn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]/;
     const rrid = /^RRID:[a-zA-Z]+.+$/;
+    const swid0  = /^swh:1:([a-z]+):[0-9a-f]{40}$/
+    const swid1 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}$/
+    const swid2 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}(;[a-z]+=[a-zA-Z0-9:._-]+)*$/
+    const raid = /^https:\/\/raid\.org\/10\.\d{2}\.\d{2}\.\d{4}\/[a-zA-Z0-9]+$/
+
 
     switch (true) {
       case isBlank(value):
@@ -182,6 +187,16 @@ export default class DoiRelatedIdentifier extends Component {
         this.fragment.set('schemeType', null);
         this.fragment.set('relatedMetadataScheme', null);
         this.fragment.set('relationType', null);
+        break;
+      case swid0.test(value) || swid1.test(value) || swid2.test(value):
+        this.fragment.set('relatedItemIdentifier', value);
+        this.fragment.set('relatedIdentifierType', 'SWHID');
+        this.set('controlledIdentifierType', true);
+        break;
+      case raid.test(value):
+        this.fragment.set('relatedItemIdentifier', value);
+        this.fragment.set('relatedIdentifierType', 'RAiD');
+        this.set('controlledIdentifierType', true);
         break;
       case ark.test(value):
         this.fragment.set('relatedIdentifier', value);
