@@ -24,7 +24,7 @@ class IdentifierFormat extends BaseValidator {
     const swid0  = /^swh:1:([a-z]+):[0-9a-f]{40}$/
     const swid1 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}$/
     const swid2 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}(;[a-z]+=[a-zA-Z0-9:._-]+)*$/
-    const raid = /^https:\/\/raid\.org\/10\.\d{2}\.\d{2}\.\d{4}\/[a-zA-Z0-9]+$/
+    const raid = /^https?:\/\/(raid\.org|raid\.org\.au|doi\.org)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
 
     const types = [
       'CSTR',
@@ -42,6 +42,12 @@ class IdentifierFormat extends BaseValidator {
     ];
 
     switch (true) {
+      case model.relatedIdentifierType == 'SWHID':
+        return swid0.test(value) || swid1.test(value) || swid2.test(value)
+          ? true
+          : 'Please enter a valid SWHID.';
+      case model.relatedIdentifierType == 'RAiD':
+        return raid.test(value) ? true : 'Please enter a valid RAiD.';
       case model.relatedIdentifierType == 'ARK':
         return ark.test(value) ? true : 'Please enter a valid ARK.';
       case model.relatedIdentifierType == 'arXiv':
@@ -64,12 +70,6 @@ class IdentifierFormat extends BaseValidator {
         return isURL(value) ? true : 'Please enter a valid URL.';
       case model.relatedIdentifierType == 'RRID':
         return rrid.test(value) ? true : 'Please enter a valid RRID.';
-      case model.relatedIdentifierType == 'SWHID':
-        return swid0.test(value) || swid1.test(value) || swid2.test(value)
-          ? true
-          : 'Please enter a valid SWHID.';
-      case model.relatedIdentifierType == 'RAiD':
-        return raid.test(value) ? true : 'Please enter a valid RAiD.';
       case types.includes(model.relatedIdentifierType):
         return true;
       default:
