@@ -24,7 +24,8 @@ class IdentifierFormat extends BaseValidator {
     const swid0  = /^swh:1:([a-z]+):[0-9a-f]{40}$/
     const swid1 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}$/
     const swid2 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}(;[a-z]+=[a-zA-Z0-9:._-]+)*$/
-    const raid = /^https?:\/\/(raid\.org|raid\.org\.au|doi\.org)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
+    // const raid = /^https?:\/\/(raid\.org|raid\.org\.au|doi\.org)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
+    const raid = /^https?:\/\/(raid\.org|raid\.org\.au)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
 
     const types = [
       'CSTR',
