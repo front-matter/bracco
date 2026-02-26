@@ -86,13 +86,13 @@ export default class DoiRelatedItemIdentifier extends Component {
         break;
       case swid0.test(value) || swid1.test(value) || swid2.test(value):
         this.fragment.set('relatedItemIdentifier', value);
-        this.fragment.set('relatedIdentifierType', 'SWHID');
+        this.fragment.set('relatedItemIdentifierType', 'SWHID');
         this.set('controlledIdentifierType', true);
         break;
       // ORDER IS IMPORTANT HERE - since RAiD identifiers are basically URLs, check for RAiD first.
       case raid.test(value):
         this.fragment.set('relatedItemIdentifier', value);
-        this.fragment.set('relatedIdentifierType', 'RAiD');
+        this.fragment.set('relatedItemIdentifierType', 'RAiD');
         this.set('controlledIdentifierType', true);
         break;
       case ark.test(value):
