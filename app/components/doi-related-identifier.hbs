@@ -17,7 +17,7 @@
 </div> 
 <div class="power-select-fragment" disabled={{this.controlledIdentifierType}} doi-related-identifier-type data-test-related-identifier-type>
   <@form.element @controlType="power-select" @value={{this.fragment.relatedIdentifierType}} @helpText="The type of the Related Identifier." @options={{this.relatedIdentifierTypeList}} @destination={{this.fragment.relatedIdentifierType}} as |el|>
-    <el.control @onChange={{action "selectRelatedIdentifierTypeAction"}} @allowClear={{true}} @placeholder="Select related Identifier Type" @disabled={{this.controlledIdentifierType}} @searchEnabled={{true}} />
+    <el.control @onChange={{action "selectRelatedIdentifierTypeAction"}} @allowClear={{true}} @placeholder="Select related Identifier Type" @disabled={{false}} @searchEnabled={{true}} />
   </@form.element>
 </div>
 
@@ -36,6 +36,19 @@
     </el.control>
   </@form.element>
 </div>
+
+<div>
+  <label for="relationTypeInformation" class="subtitle">Relation Type Information</label> 
+</div> 
+<div doi-relation-type-information data-test-relation-type-information-field>
+  <input type="text" class="form-control relation-type-information-field" value={{this.fragment.relationTypeInformation}} placeholder="Relation Type Information"
+    oninput={{action "updateRelationTypeInformationAction" value="target.value"}} data-test-relation-type-information />
+</div>
+<div
+  class="help-block help-block-fragment relation-type-information-field">
+  Text to support the Relation Type.
+</div>
+
 
 <div class="power-select-label">
   <label for="relatedResourceType" class="subtitle">Resource Type General</label> 

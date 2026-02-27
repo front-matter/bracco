@@ -21,6 +21,12 @@ class IdentifierFormat extends BaseValidator {
     const bibcode = /\d{4}[A-Za-z\.\&]{5}[\w\.]{4}[ELPQ-Z\.][\d\.]{4}[A-Z]/;
     const urn = /^urn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]/;
     const rrid = /^RRID:[a-zA-Z]+.+$/;
+    const swid0  = /^swh:1:([a-z]+):[0-9a-f]{40}$/
+    const swid1 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}$/
+    const swid2 = /^swh:1:(cnt|dir|rev|rel|snp):[0-9a-f]{40}(;[a-z]+=[a-zA-Z0-9:._-]+)*$/
+    // const raid = /^https?:\/\/(raid\.org|raid\.org\.au|doi\.org)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
+    const raid = /^https?:\/\/(raid\.org|raid\.org\.au)\/10\.\d{3,9}\/[a-zA-Z0-9.\-_]+$/
+
     const types = [
       'CSTR',
       'EAN13',
@@ -37,6 +43,12 @@ class IdentifierFormat extends BaseValidator {
     ];
 
     switch (true) {
+      case model.relatedIdentifierType == 'SWHID':
+        return swid0.test(value) || swid1.test(value) || swid2.test(value)
+          ? true
+          : 'Please enter a valid SWHID.';
+      case model.relatedIdentifierType == 'RAiD':
+        return raid.test(value) ? true : 'Please enter a valid RAiD.';
       case model.relatedIdentifierType == 'ARK':
         return ark.test(value) ? true : 'Please enter a valid ARK.';
       case model.relatedIdentifierType == 'arXiv':

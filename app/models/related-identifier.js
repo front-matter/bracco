@@ -87,6 +87,9 @@ export default class RelatedIdentifier extends Fragment.extend(Validations) {
   relationType;
 
   @attr('string', { defaultValue: null })
+  relationTypeInformation;
+
+  @attr('string', { defaultValue: null })
   relatedMetadataScheme;
 
   @attr('string', { defaultValue: null })
