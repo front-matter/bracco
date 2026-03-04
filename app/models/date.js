@@ -15,8 +15,9 @@ const Validations = buildValidations({
     })
   ],
   date: [
-    validator('date-format', {
-      allowBlank: true,
+    validator('presence', {
+      presence: true,
+      message: 'Date must be included when adding a Date',
       disabled: computed('model.state', function () {
         return this.model.get('state') === 'draft';
       })
