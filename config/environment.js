@@ -1,6 +1,8 @@
 /* eslint-env node */
 'use strict';
 
+const M = require('minimatch');
+
 function normalizeURL(val) {
   return val.trim().replace(/\/$/, '');
 }
@@ -112,6 +114,7 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'bracco',
     environment,
+    fabricaDeployTarget,
     rootURL: '/',
     locationType: process.env.EMBER_CLI_ELECTRON ? 'hash' : 'history',
     EmberENV: {
@@ -204,7 +207,10 @@ module.exports = function (environment) {
       typeof process.env.HANDLE_SERVER === 'undefined' ||
       process.env.HANDLE_SERVER == ''
         ? 'https://handle.stage.datacite.org'
-        : normalizeURL(process.env.HANDLE_SERVER)
+        : normalizeURL(process.env.HANDLE_SERVER),
+    METADATA_DASHBOARD_URL:
+      process.env.METADATA_DASHBOARD_URL ||
+      'https://metadata.stage.datacite.org'
   };
 
   if (fabricaDeployTarget === 'stage') {
@@ -224,6 +230,7 @@ module.exports = function (environment) {
       process.env.HANDLE_SERVER == ''
         ? 'https://handle.test.datacite.org'
         : normalizeURL(process.env.HANDLE_SERVER);
+    ENV.METADATA_DASHBOARD_URL = ""; // no metadata dashboard for test environment
   }
 
   if (fabricaDeployTarget === 'production') {
