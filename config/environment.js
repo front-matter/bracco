@@ -1,8 +1,6 @@
 /* eslint-env node */
 'use strict';
 
-const M = require('minimatch');
-
 function normalizeURL(val) {
   return val.trim().replace(/\/$/, '');
 }
