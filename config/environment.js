@@ -207,8 +207,9 @@ module.exports = function (environment) {
         ? 'https://handle.stage.datacite.org'
         : normalizeURL(process.env.HANDLE_SERVER),
     METADATA_DASHBOARD_URL:
-      process.env.METADATA_DASHBOARD_URL ||
-      'https://metadata.stage.datacite.org'
+      typeof process.env.METADATA_DASHBOARD_URL === 'undefined' || process.env.METADATA_DASHBOARD_URL == ''
+        ? 'https://metadata.stage.datacite.org'
+        : normalizeURL(process.env.METADATA_DASHBOARD_URL)
   };
 
   if (fabricaDeployTarget === 'stage') {
@@ -228,7 +229,8 @@ module.exports = function (environment) {
       process.env.HANDLE_SERVER == ''
         ? 'https://handle.test.datacite.org'
         : normalizeURL(process.env.HANDLE_SERVER);
-    ENV.METADATA_DASHBOARD_URL = ""; // no metadata dashboard for test environment
+    // no metadata dashboard for test environment
+    ENV.METADATA_DASHBOARD_URL = "";
   }
 
   if (fabricaDeployTarget === 'production') {

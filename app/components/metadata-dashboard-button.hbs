@@ -1,4 +1,4 @@
-{{#if (not-eq this.fabricaDeployTarget "test")}}
+{{#if (and (not-eq this.fabricaDeployTarget "test") this.metadataDashboardUrl)}}
 <div class="btn-group btn-group-sm metadata-dashboard-button">
   <a href={{this.metadataDashboardUrl}} target="_blank" rel="noopener noreferrer" class="btn btn-warning" id="metadata-dashboard">
     <i class="fas fa-external-link-alt"></i>
