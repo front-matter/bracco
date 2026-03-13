@@ -249,6 +249,7 @@ module.exports = function (environment) {
       process.env.HANDLE_SERVER == ''
         ? 'https://doi.org'
         : normalizeURL(process.env.HANDLE_SERVER);
+    ENV.METADATA_DASHBOARD_URL = "https://metadata.datacite.org";
   }
 
   // Environment named 'test' here is the ember environment, not related to fabrica environments.
