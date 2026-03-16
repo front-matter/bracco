@@ -591,8 +591,3 @@ div[doi-publisher] > div {
   font-size: 18px;
   color: #243B54;
 }
-
-.required-label label.form-label:before {
-    color: #e74c3c;
-    content: "* "
-}

@@ -29,6 +29,7 @@ export default class EditController extends Controller {
   re3data = null;
   softwareList = softwareList;
   softwares = softwareList;
+  isSoftwareFieldActive = false;
   clientTypeList = clientTypeList;
   clientTypes = clientTypeList;
 
@@ -184,5 +185,11 @@ export default class EditController extends Controller {
   cancelAction() {
     this.model.rollbackAttributes();
     this.router.transitionTo('repositories.show', this.model);
+  }
+
+  // This helps to manage the validation state of the software field.  The field is required, but we don't want to show it as invalid until the user has interacted with it.
+  @action
+  activateSoftwareField() {
+    return this.set('isSoftwareFieldActive', true);
   }
 }
