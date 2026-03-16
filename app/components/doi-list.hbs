@@ -14,6 +14,9 @@
           </BsAlert>
       </div>
     </div>
+    <div>
+      <MetadataDashboardButton />
+    </div>
   {{/unless}}
   {{#if
     (eq this.link 'repositories.show.dois')
@@ -37,6 +40,9 @@
                 {{#if (and this.repository.isActive (or (can 'create doi' this.model) (can 'upload doi' this.model)) (gt this.repository.meta.prefixCount 0))}}
                   <CreateDoiButton @model={{this.model}} class="create-doi-button" />
                 {{/if}}
+                <div>
+                  <MetadataDashboardButton />
+                </div>
                 <div class="btn-group-vertical btn-group-sm">
                   <ExportBasicMetadata @model={{this.model}} @client_id={{this.repository.id}} @page={{this.page}} class="btn btn-warning" />
                   {{#if (and (can 'move doi' this.repository))}} 
@@ -62,6 +68,9 @@
             <div class="panel-body">
               <CreateDoiButton @model={{this.model}} class="create-doi-button" />
             </div>
+          </div>
+          <div>
+            <MetadataDashboardButton />
           </div>
         {{/if}}
       {{/if}}
