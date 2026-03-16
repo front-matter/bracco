@@ -39,13 +39,6 @@ export default class EditRoute extends Route {
 
     controller.set('clientTypeList', filteredClientTypeList);
     controller.set('clientTypes', filteredClientTypeList);
-  }
-
-  setupController(controller, model) {
-    // Call _super to maintain default behavior (controller.set('model', model))
-    super.setupController(controller, model);
-
-    // Custom setup: Set additional properties
     controller.set('isSoftwareFieldActive', false);
   }
 
