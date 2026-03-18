@@ -61,6 +61,12 @@ z-index: 10000;
   width: 100%;
 }
 
+/* Metadata dashboard button - make it look more like other buttons in the left sidebar. */
+.metadata-dashboard-button {
+  margin-left: 5px;
+  margin-bottom: 15px;
+}
+
 /* INFO TAB - chart placement on info tab*/
 
 #info-tab.content div.row.user-role, #info-tab div.row.row-chart div  {
