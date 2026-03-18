@@ -7,7 +7,7 @@ export default class MetadataDashboardButton extends Component {
   @service router
 
   get metadataDashboardUrl() {
-    return ENV.METADATA_DASHBOARD_URL + "/" + this.router.currentURL.split('/').pop();
+    return ENV.METADATA_DASHBOARD_URL + (this.router.currentURL ? "/" + this.router.currentURL.split('/').pop() : '');
   }
 
   get fabricaDeployTarget() {
