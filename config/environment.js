@@ -112,6 +112,7 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'bracco',
     environment,
+    fabricaDeployTarget,
     rootURL: '/',
     locationType: process.env.EMBER_CLI_ELECTRON ? 'hash' : 'history',
     EmberENV: {
@@ -204,7 +205,11 @@ module.exports = function (environment) {
       typeof process.env.HANDLE_SERVER === 'undefined' ||
       process.env.HANDLE_SERVER == ''
         ? 'https://handle.stage.datacite.org'
-        : normalizeURL(process.env.HANDLE_SERVER)
+        : normalizeURL(process.env.HANDLE_SERVER),
+    METADATA_DASHBOARD_URL:
+      typeof process.env.METADATA_DASHBOARD_URL === 'undefined' || process.env.METADATA_DASHBOARD_URL == ''
+        ? 'https://metadata.stage.datacite.org'
+        : normalizeURL(process.env.METADATA_DASHBOARD_URL)
   };
 
   if (fabricaDeployTarget === 'stage') {
@@ -224,6 +229,8 @@ module.exports = function (environment) {
       process.env.HANDLE_SERVER == ''
         ? 'https://handle.test.datacite.org'
         : normalizeURL(process.env.HANDLE_SERVER);
+    // no metadata dashboard for test environment
+    ENV.METADATA_DASHBOARD_URL = "";
   }
 
   if (fabricaDeployTarget === 'production') {
@@ -242,6 +249,7 @@ module.exports = function (environment) {
       process.env.HANDLE_SERVER == ''
         ? 'https://doi.org'
         : normalizeURL(process.env.HANDLE_SERVER);
+    ENV.METADATA_DASHBOARD_URL = "https://metadata.datacite.org";
   }
 
   // Environment named 'test' here is the ember environment, not related to fabrica environments.
