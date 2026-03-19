@@ -67,6 +67,10 @@ z-index: 10000;
   margin-bottom: 15px;
 }
 
+.metadata-dashboard-button a{
+  font-size: 16px !important;
+}
+
 /* INFO TAB - chart placement on info tab*/
 
 #info-tab.content div.row.user-role, #info-tab div.row.row-chart div  {

@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import ENV from 'bracco/config/environment';
+import { action } from '@ember/object';
 
 export default class MetadataDashboardButton extends Component {
 
@@ -9,5 +10,10 @@ export default class MetadataDashboardButton extends Component {
 
   get fabricaDeployTarget() {
     return ENV.fabricaDeployTarget;
+  }
+
+  @action
+  openLink(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }
