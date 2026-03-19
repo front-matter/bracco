@@ -62,13 +62,11 @@ z-index: 10000;
 }
 
 /* Metadata dashboard button - make it look more like other buttons in the left sidebar. */
-.metadata-dashboard-button {
-  margin-left: 5px;
-  margin-bottom: 15px;
-}
 
-.metadata-dashboard-button a{
-  font-size: 16px !important;
+.metadata-dashboard-button button {
+    margin-left: 5px;
+    margin-bottom: 15px;
+    font-size: 16px !important;
 }
 
 /* INFO TAB - chart placement on info tab*/
