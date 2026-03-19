@@ -1,13 +1,10 @@
 import Component from '@glimmer/component';
 import ENV from 'bracco/config/environment';
-import { inject as service } from '@ember/service';
 
 export default class MetadataDashboardButton extends Component {
-  @service currentUser;
-  @service router
 
   get metadataDashboardUrl() {
-    return ENV.METADATA_DASHBOARD_URL + (this.router.currentURL ? "/" + this.router.currentURL.split('/').pop() : '');
+    return ENV.METADATA_DASHBOARD_URL + (this.args.dashboardId ? "/" + this.args.dashboardId.toLowerCase() : '');
   }
 
   get fabricaDeployTarget() {

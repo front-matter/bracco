@@ -18,7 +18,7 @@
               {{#if (and this.model.isActive (can 'update repository' this.model) (or (can 'create doi' this.model) (can 'upload doi' this.model)) (gt this.model.meta.prefixCount 0))}}
                 <CreateDoiButton @model={{this.model}} class="create-doi-button" />
               {{/if}}
-              <MetadataDashboardButton />
+              <MetadataDashboardButton @dashboardId={{this.model.id}} />
             </div>
           </div>
         </div>
