@@ -14,6 +14,7 @@ export default class MetadataDashboardButton extends Component {
 
   @action
   openLink(url) {
+    document.activeElement.blur(); // Remove focus from the button after clicking to ultimately clear the styles when the user returns to the page.
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 }
