@@ -1,8 +1,7 @@
 {{#if (and (not-eq this.fabricaDeployTarget "test") this.metadataDashboardUrl)}}
-<div class="btn-group btn-group-sm metadata-dashboard-button">
-  <a href={{this.metadataDashboardUrl}} target="_blank" rel="noopener noreferrer" class="btn btn-warning" id="metadata-dashboard">
-    <i class="fas fa-external-link-alt"></i>
-    Metadata Dashboard
-  </a>
-</div>
+  <div class="metadata-dashboard-button">
+    <BsButton class="btn-warning"  id="metadata-dashboard-button" {{on "click" (fn this.openLink this.metadataDashboardUrl)}}>
+      <i class="fas fa-external-link-alt"></i>Metadata Dashboard
+    </BsButton>
+  </div>
 {{/if}}
