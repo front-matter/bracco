@@ -24,11 +24,13 @@ jobs:
     secrets: inherit
 
   deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository }}  
     needs: [call_build, ember_test, cypress_test]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     environment: vercel-bracco-preview
     env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
