@@ -156,6 +156,9 @@ const Validations = buildValidations({
       allowBlank: true,
       message: 'ISSN (print) is in the wrong format.'
     })
+  ],
+  software: [
+    validator('presence', true)
   ]
 });
 

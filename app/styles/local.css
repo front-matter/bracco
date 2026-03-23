@@ -149,7 +149,6 @@ div[doi-format].power-select-fragment .ember-basic-dropdown-trigger div.ember-vi
 /*  VALIDATION - FORM-GROUPS */
 
 .form-group .form-text {
-  font-size: 16px;
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -557,7 +556,6 @@ div[doi-publisher] > div {
 .form-group input.is-valid + div.form-text {
     color: #2ecc71;
 }
-*/
 
 /* VALIDATION - text areas (Mostly in doi form upload.) */
 

@@ -37,4 +37,22 @@ export default class NewRoute extends Route {
       })
     });
   }
+
+  setupController(controller, model) {
+    // Call _super to maintain default behavior (controller.set('model', model))
+    super.setupController(controller, model);
+
+    // Custom setup: Set additional properties
+    controller.set('isSoftwareFieldActive', false);
+  }
+
+  resetController(controller, isExiting, transition) {
+    // If the user is exiting the route entirely, reset the transient properties
+    if (isExiting) {
+      controller.set('isSoftwareFieldActive', false);
+    }
+
+    // Calls the default resetController behavior (important for query params)
+    super.resetController(controller, isExiting, transition);
+  }
 }
