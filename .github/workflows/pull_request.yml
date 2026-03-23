@@ -24,7 +24,8 @@ jobs:
     secrets: inherit
 
   deploy:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository }}  
+    name: Deploy to Vercel Preview
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]') }} 
     needs: [call_build, ember_test, cypress_test]
     runs-on: ubuntu-latest
     permissions:
@@ -33,7 +34,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Vercel deploy preview
         uses: amondnet/vercel-action@225d234cfe5340ca1f9a6cd158338126b5b6845f # v25.1.1
         with:
