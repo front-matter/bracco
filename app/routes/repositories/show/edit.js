@@ -39,5 +39,16 @@ export default class EditRoute extends Route {
 
     controller.set('clientTypeList', filteredClientTypeList);
     controller.set('clientTypes', filteredClientTypeList);
+    controller.set('isSoftwareFieldActive', false);
+  }
+
+  resetController(controller, isExiting, transition) {
+    // If the user is exiting the route entirely, reset the transient properties
+    if (isExiting) {
+      controller.set('isSoftwareFieldActive', false);
+    }
+
+    // Calls the default resetController behavior (important for query params)
+    super.resetController(controller, isExiting, transition);
   }
 }
