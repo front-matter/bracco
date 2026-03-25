@@ -54,6 +54,9 @@ module.exports = function (defaults) {
       },
       'cdn-url': {
         content: process.env.CDN_URL || 'https://assets.datacite.org'
+      },
+      'toast-data-site': {
+        content: process.env.FABRICA_DEPLOY_TARGET === 'production' ? 'fabrica' : 'fabrica-stage' 
       }
     },
     'ember-power-select': {
