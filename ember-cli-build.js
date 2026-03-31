@@ -56,7 +56,11 @@ module.exports = function (defaults) {
         content: process.env.CDN_URL || 'https://assets.datacite.org'
       },
       'toast-data-site': {
-        content: process.env.FABRICA_DEPLOY_TARGET === 'production' || process.env.FABRICA_DEPLOY_TARGET === 'test' ? 'fabrica' : 'fabrica-stage' 
+        content: process.env.FABRICA_DEPLOY_TARGET === 'production'
+          ? 'fabrica'
+          : process.env.FABRICA_DEPLOY_TARGET === 'test'
+            ? 'fabrica-test'
+            : 'fabrica-stage'
       }
     },
     'ember-power-select': {
