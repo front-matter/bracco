@@ -159,7 +159,6 @@ describe('ACCEPTANCE: ORGANIZATION_ADMIN | REPOSITORIES', () => {
       cy.get('#client-type .ember-power-select-selected-item').should('contain', 'Repository');
       */
 
-      cy.get('#re3data').should('be.visible');
       cy.get('#name').should('be.visible');
       cy.get('#alternate-name').should('be.visible');
       cy.get('#system-email').should('be.visible');

@@ -27,12 +27,6 @@
 
       {{#if (eq this.model.repository.clientType "periodical")}}
         <RepositoryIssn @model={{this.model.repository}} @fragment={{this.model.repository.issn}} @form={{form}} />
-      {{else}}
-        <form.element @controlType="power-select" id="re3data" class="form-group" @property="re3data" @label="re3data Record (optional)" @optionLabelPath="re3data" @options={{this.repositories}} @destination={{this.re3data}} @helpText="re3data is a registry of research data repositories." as |el|>
-          <el.control @onChange={{action "selectRe3DataAction"}} @search={{action "searchRe3DataAction"}} @searchField="repositoryName" @searchPlaceholder="Type to search..." @allowClear={{true}} @searchEnabled={{true}} as |item|>
-            {{if item.name item.name this.model.repository.re3data}}
-          </el.control>
-        </form.element>
       {{/if}}
 
       <form.element @controlType="text" id="name" class="form-group" @label="Repository Name" @property="name" @useIcons={{false}} />
