@@ -35,6 +35,7 @@ export default class NewController extends Controller {
   focusAreas = focusAreaList;
   nonProfitStatusList = nonProfitStatusList;
   nonProfitStatuses = nonProfitStatusList;
+  isCountryFieldActive = false;
 
   init(...args) {
     super.init(...args);
@@ -44,17 +45,22 @@ export default class NewController extends Controller {
   }
 
   @action
-  searchCountry(query) {
+  searchCountryAction(query) {
     let countries = countryList.filter(function (country) {
       return country.name.toLowerCase().startsWith(query.toLowerCase());
     });
     this.set('countries', countries);
   }
 
+
   @action
-  selectCountry(country) {
-    this.model.organization.set('country', country);
-    this.set('countries', countryList);
+  selectCountryAction(country) {
+    if (country == null) { 
+      this.model.organization.set('country', null);
+    } else {
+      this.model.organization.set('country', country);
+      this.set('countries', countryList);
+    }
   }
 
   @action
@@ -199,5 +205,12 @@ export default class NewController extends Controller {
       'providers.show.organizations',
       this.get('model.provider.id')
     );
+  }
+  // This helps to manage the validation state of the country field.  The field is required, but we don't want to show it as invalid until the user has interacted with it.
+  @action
+  activateCountryField() {
+    console.log("GOT HERE - new.js:212 - organization");
+    console.log("isCountryFieldActive: " + this.isCountryFieldActive);
+    return this.set('isCountryFieldActive', true);
   }
 }

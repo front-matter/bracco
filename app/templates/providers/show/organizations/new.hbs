@@ -166,8 +166,8 @@
       <form.element
         @controlType="power-select"
         id="country"
-        class="form-group"
-        @label="Country (optional)"
+        class="form-group required-label {{if (and this.isCountryFieldActive (v-get this.model.organization 'country' 'isInvalid')) 'has-error'}}"
+        @label="Country - abc"
         @property="country"
         @optionLabelPath="name"
         @options={{this.countries}}
@@ -175,8 +175,9 @@
         @helpText="Country where the organization is located." as |el|
       >
         <el.control
-          @onChange={{action 'selectCountry'}}
-          @search={{action 'searchCountry'}}
+          {{on "click" this.activateCountryField}}
+          @onChange={{action 'selectCountryAction'}}
+          @search={{action 'searchCountryAction'}}
           @searchField="name"
           @placeholder="Select Country"
           @searchPlaceholder="Type to search..."
