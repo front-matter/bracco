@@ -32,29 +32,6 @@ export default class ChangeController extends Controller {
   }
 
   @action
-  generateAction() {
-    let self = this;
-    let url = ENV.API_URL + '/random';
-    fetch(url, {
-      headers: {
-        Authorization: 'Bearer ' + this.currentUser.get('jwt')
-      }
-    })
-      .then(function (response) {
-        if (response.ok) {
-          response.json().then(function (data) {
-            self.get('model').set('passwordInput', data.phrase);
-          });
-        } else {
-          console.debug(response);
-        }
-      })
-      .catch(function (error) {
-        console.debug(error);
-      });
-  }
-
-  @action
   submitAction(repository) {
     let self = this;
     repository
