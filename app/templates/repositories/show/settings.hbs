@@ -114,20 +114,6 @@
           </span>
         </h5>
         {{this.model.symbol}}
-        {{#if this.model.re3data}}
-          <h5>
-            re3data Record
-            <span>
-              <i class="fas fa-question-circle"></i>
-              <BsTooltip @renderInPlace={{true}} @placement="top" @viewportPadding={{10}}>
-                re3data is a registry of research data repositories.
-              </BsTooltip>
-            </span>
-          </h5>
-          <a href="{{this.model.re3data}}">
-            {{this.model.re3data}}
-          </a>
-        {{/if}}
         {{#if (and (can 'create provider') this.model.salesforceId)}}
           <h5>
             Salesforce ID

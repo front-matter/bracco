@@ -5,7 +5,6 @@ const labelList = {
   symbol: 'repository ID',
   confirmSymbol: 'confirm repository ID',
   globusUuid: 'globus UUID',
-  re3data: 're3data ID',
   name: 'repository name',
   alternateName: 'repository alternate name',
   systemEmail: 'system email'

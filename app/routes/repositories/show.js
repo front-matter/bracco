@@ -33,7 +33,6 @@ export default class ShowRoute extends Route {
       .then(function (repository) {
         self.headData.set('title', repository.name);
         self.headData.set('description', repository.description);
-        self.headData.set('image', repository.badgeUrl);
 
         return repository;
       })

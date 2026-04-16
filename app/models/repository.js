@@ -192,9 +192,6 @@ export default class Repository extends Model.extend(Validations) {
   @attr('string')
   globusUuid;
 
-  @attr('string')
-  re3data;
-
   @attr('string', { defaultValue: '*' })
   domains;
 
@@ -266,20 +263,6 @@ export default class Repository extends Model.extend(Validations) {
     return this.domains.split(',').map(function (item) {
       return item.trim();
     });
-  }
-
-  @computed('re3data')
-  get badgeUrl() {
-    if (this.re3data) {
-      return (
-        ENV.API_URL +
-        '/re3data/' +
-        this.re3data.substr(this.re3data.indexOf('1')) +
-        '/badge'
-      );
-    } else {
-      return null;
-    }
   }
 
   get isDisciplinary() {
