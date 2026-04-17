@@ -16,7 +16,7 @@ export default class EditController extends Controller {
   countries = null;
 
   @action
-  searchCountry(query) {
+  searchCountryAction(query) {
     let countries = countryList.filter(function (country) {
       return country.name.toLowerCase().startsWith(query.toLowerCase());
     });
@@ -24,7 +24,7 @@ export default class EditController extends Controller {
   }
 
   @action
-  selectCountry(country) {
+  selectCountryAction(country) {
     this.model.set('country', country);
     this.set('countries', countryList);
   }

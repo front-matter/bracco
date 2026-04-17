@@ -23,7 +23,7 @@
             <form.element @controlType="textarea" id="description" class="form-group" @label="Description (optional)" @property="description" rows="10" @helpText="Description of the provider. Please use markdown for formatting." as |el|>  <el.control id="description-field" /> </form.element>
    
             <form.element @controlType="power-select" id="country" class="form-group" @label="Country (optional)" @property="country" @optionLabelPath="name" @options={{this.countries}} @destination={{this.country}} @helpText="Country where the member is located." as |el|>
-              <el.control @onChange={{action "selectCountry"}} @search={{action "searchCountry"}} @searchField="name" @placeholder="Select Country" @searchPlaceholder="Type to search..." @searchEnabled={{true}} @allowClear={{true}} id="country-field" as |item|>
+              <el.control @onChange={{action "selectCountryAction"}} @search={{action "searchCountryAction"}} @searchField="name" @placeholder="Select Country" @searchPlaceholder="Type to search..." @searchEnabled={{true}} @allowClear={{true}} id="country-field" as |item|>
                 {{item.name}}
               </el.control>
             </form.element>
