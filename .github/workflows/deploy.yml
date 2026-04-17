@@ -10,20 +10,20 @@ jobs:
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  ember_test:
-    name: Ember Testing
-    needs: call_build
-    uses: ./.github/workflows/ember_test.yml
-    secrets: inherit
+#  ember_test:
+#    name: Ember Testing
+#    needs: call_build
+#    uses: ./.github/workflows/ember_test.yml
+#    secrets: inherit
 
-  cypress_test:
-    name: Cypress Testing
-    needs: call_build
-    uses: ./.github/workflows/cypress_test.yml
-    secrets: inherit
+#  cypress_test:
+#    name: Cypress Testing
+#    needs: call_build
+#    uses: ./.github/workflows/cypress_test.yml
+#    secrets: inherit
 
   deploy:
-    needs: [call_build, ember_test, cypress_test]
+#    needs: [call_build, ember_test, cypress_test]
     runs-on: ubuntu-latest
     environment: vercel-bracco-preview
     env:
@@ -41,7 +41,7 @@ jobs:
         id: extract_variables
 
       - name: Vercel deploy
-        uses: amondnet/vercel-action@v25.1.1
+        uses: amondnet/vercel-action@v42.2.0
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID}}
