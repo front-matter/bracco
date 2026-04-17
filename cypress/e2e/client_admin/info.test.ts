@@ -156,7 +156,6 @@ describe('ACCEPTANCE: CLIENT_ADMIN | INFO', () => {
           cy.get('ul.ember-power-select-options li').contains('Repository').click({ waitForAnimations: true })
       });
 
-      cy.get('#re3data').should('be.visible');
       cy.get('#name').should('be.visible');
       cy.get('#name-field').should('be.visible');
       cy.get('#alternate-name').should('be.visible');

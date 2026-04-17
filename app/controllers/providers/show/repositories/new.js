@@ -19,7 +19,6 @@ export default class NewController extends Controller {
   @service
   flashMessages;
 
-  re3data = null;
   softwareList = softwareList;
   softwares = softwareList;
   isSoftwareFieldActive = false;
@@ -37,82 +36,6 @@ export default class NewController extends Controller {
     super.init(...args);
 
     this.repositories = this.repositories || [];
-  }
-
-  @action
-  searchRe3DataAction(query) {
-    let self = this;
-    this.store
-      .query('re3data', { query, 'page[size]': 25 })
-      .then(function (repositories) {
-        self.set('repositories', repositories);
-      })
-      .catch(function (reason) {
-        console.debug(reason);
-        self.set('repositories', []);
-      });
-  }
-
-  @action
-  selectRe3DataAction(re3data) {
-    if (re3data) {
-      let self = this;
-      this.store
-        .findRecord('re3data', re3data.id)
-        .then(function (repo) {
-          self.set('re3data', repo);
-          self.model.repository.set('clientType', 'repository');
-          self.model.repository.set(
-            're3data',
-            'https://doi.org/' + repo.get('id')
-          );
-          self.model.repository.set('name', repo.get('repositoryName'));
-          self.model.repository.set('description', repo.get('description'));
-          if (repo.get('additionalNames').length > 0) {
-            self.model.repository.set(
-              'alternateName',
-              A(repo.get('additionalNames')).get('firstObject').text
-            );
-          } else {
-            self.model.repository.set('alternateName', null);
-          }
-          self.model.repository.set('url', repo.get('repositoryUrl'));
-          if (repo.get('software').length > 0) {
-            let software = repo.get('software')[0].name;
-            if (software === 'DataVerse') {
-              software = 'Dataverse';
-            } else if (software === 'unknown') {
-              software = 'Other';
-            }
-            self.model.repository.set('software', capitalize(software));
-          }
-          if (repo.get('repositoryLanguages').length > 0) {
-            self.model.repository.set(
-              'language',
-              A(repo.get('repositoryLanguages')).map(function (l) {
-                return langs.where('2', l.text)['1'];
-              })
-            );
-          }
-          if (repo.get('types').length > 0) {
-            self.model.repository.set(
-              'repositoryType',
-              A(repo.get('types')).mapBy('text')
-            );
-          }
-          if (repo.get('certificates').length > 0) {
-            self.model.repository.set(
-              'certificate',
-              A(repo.get('certificates')).mapBy('text')
-            );
-          }
-        })
-        .catch(function (reason) {
-          console.debug(reason);
-        });
-    } else {
-      this.model.repository.set('re3data', null);
-    }
   }
 
   @action

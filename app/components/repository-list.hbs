@@ -460,20 +460,6 @@
               </span>
             </h5>
             {{repository.symbol}}
-            {{#if repository.re3data}}
-              <h5>
-                re3data Record
-                <span>
-                  <i class="fas fa-question-circle"></i>
-                  <BsTooltip @renderInPlace={{true}} @placement="top" @viewportPadding={{10}}>
-                    re3data is a registry of research data repositories.
-                  </BsTooltip>
-                </span>
-              </h5>
-              <a href="{{repository.re3data}}">
-                {{repository.re3data}}
-              </a>
-            {{/if}}
             {{#if repository.systemEmail}}
               <h5>
                 System Email
