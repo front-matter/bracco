@@ -6,6 +6,11 @@ jobs:
   deploy:
     if: ${{ github.event.label.name == 'create preview app' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+      issues: write
     environment: vercel-bracco-preview
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

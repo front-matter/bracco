@@ -23,7 +23,7 @@ jobs:
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             node_modules
             ~/.cache/Cypress
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-node-24-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Download Test Build artifact
         uses: actions/download-artifact@v8
