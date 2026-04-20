@@ -236,7 +236,10 @@ const Validations = buildValidations({
           !ENV.featureFlags['enable-doi-estimate']
         );
       })
-    })
+    }),
+  ],
+  country: [
+    validator('presence', true)
   ]
 });
 

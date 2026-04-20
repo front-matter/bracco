@@ -167,6 +167,7 @@ export default class NewController extends Controller {
   focusAreas = focusAreaList;
   nonProfitStatusList = nonProfitStatusList;
   nonProfitStatuses = nonProfitStatusList;
+  isCountryFieldActive = false;
 
   // we are storing state/province information for US, CA, AU and CN
   @computed('model.billingInformation.country')
@@ -196,7 +197,7 @@ export default class NewController extends Controller {
   }
 
   @action
-  searchCountry(query) {
+  searchCountryAction(query) {
     let countries = countryList.filter(function (country) {
       return country.name.toLowerCase().startsWith(query.toLowerCase());
     });
@@ -204,12 +205,17 @@ export default class NewController extends Controller {
   }
 
   @action
-  selectCountry(country) {
-    this.model.set('country', {
-      code: country.code,
-      name: countryList.name(country.code)
-    });
-    this.set('countries', countryList);
+  selectCountryAction(country) {
+    if (country == null) { 
+      this.model.set('country', null);
+    } else {
+      this.model.set('country', {
+        code: country.code,
+        name: countryList.name(country.code)
+        
+      });
+      this.set('countries', countryList);
+    }
   }
 
   @action
@@ -424,5 +430,11 @@ export default class NewController extends Controller {
   cancel() {
     this.model.rollbackAttributes();
     this.router.transitionTo('providers');
+  }
+
+  // This helps to manage the validation state of the country field.  The field is required, but we don't want to show it as invalid until the user has interacted with it.
+  @action
+  activateCountryField() {
+    return this.set('isCountryFieldActive', true);
   }
 }

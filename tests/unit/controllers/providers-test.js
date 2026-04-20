@@ -21,9 +21,9 @@ module('Unit | Controller | providers', function (hooks) {
       organization: make('provider', { memberType: 'direct_member' })
     };
     controller.set('model', model);
-    controller.send('selectCountry', 'Australia');
+    controller.send('selectCountryAction', 'Australia');
     assert.equal(controller.model.organization.get('country'), 'Australia');
-    controller.send('searchCountry', 'Australia');
+    controller.send('searchCountryAction', 'Australia');
     assert.equal(controller.countries.length, 1);
   });
 
