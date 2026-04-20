@@ -147,6 +147,7 @@ module.exports = function (environment) {
     },
     featureFlags: {
       'show-researchers': false,
+      // This will go away.
       'enable-doi-estimate':
         process.env.ENABLE_DOI_ESTIMATE === '1' ? true : false
     },
