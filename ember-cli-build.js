@@ -17,7 +17,8 @@ module.exports = function (defaults) {
       },
     },
     minifyCSS: {
-      options: { processImport: true }
+      options: { processImport: true },
+      enabled: false
     },
     'ember-cli-babel': {
       includePolyfill: true
