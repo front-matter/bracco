@@ -25,7 +25,6 @@ export default class NewRoute extends Route {
       billingContact: null,
       secondaryBillingContact: null,
       isActive: true
-      //doiEstimate: 0
     });
 
     return hash({

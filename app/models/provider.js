@@ -210,34 +210,6 @@ const Validations = buildValidations({
     })
   ],
   'billingInformation.state': [validator('billing-state')],
-  doiEstimate: [
-    validator('presence', {
-      presence: true,
-      ignoreBlank: true,
-      message: 'A doi estimate is required.',
-
-      disabled: computed('model', function () {
-        return (
-          this.model.get('memberType') !== 'consortium_organization' ||
-          !this.model.get('memberType') || // memberType is null for admin account
-          !ENV.featureFlags['enable-doi-estimate']
-        );
-      })
-    }),
-    validator('number', {
-      allowString: true,
-      integer: true,
-      positive: true,
-
-      disabled: computed('model', function () {
-        return (
-          this.model.get('memberType') !== 'consortium_organization' ||
-          !this.model.get('memberType') || // memberType is null for admin account
-          !ENV.featureFlags['enable-doi-estimate']
-        );
-      })
-    }),
-  ],
   country: [
     validator('presence', true)
   ]
@@ -367,9 +339,6 @@ export default class Provider extends Model.extend(Validations) {
 
   @attr('date')
   updated;
-
-  @attr('number')
-  doiEstimate;
 
   @computed('id')
   get uid() {
