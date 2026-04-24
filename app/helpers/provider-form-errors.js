@@ -12,8 +12,7 @@ const providerLabelList = {
   votingContact: 'voting representative',
   serviceContact: 'service contact',
   billingContact: 'billing contact',
-  'billingInformation.state': 'billing state/province information',
-  doiEstimate: 'doi estimate'
+  'billingInformation.state': 'billing state/province information'
 };
 const organizationLabelList = {
   symbol: 'member ID',
@@ -23,8 +22,7 @@ const organizationLabelList = {
   name: 'organization name',
   displayName: 'organization display name',
   systemEmail: 'system email',
-  serviceContact: 'service contact',
-  doiEstimate: 'doi estimate'
+  serviceContact: 'service contact'
 };
 
 export function providerFormErrors([model]) {

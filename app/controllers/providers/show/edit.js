@@ -189,14 +189,6 @@ export default class EditController extends Controller {
   }
 
   @action
-  toggleInput() {
-    let estimate = this.model.get('doiEstimate');
-
-    this.model.set('doiEstimate', '0');
-    this.model.set('doiEstimate', estimate);
-  }
-
-  @action
   searchCountryAction(query) {
     let countries = countryList.filter(function (country) {
       return country.name.toLowerCase().startsWith(query.toLowerCase());

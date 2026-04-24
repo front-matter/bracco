@@ -187,15 +187,6 @@ export default class NewController extends Controller {
     this.consortia = this.consortia || [];
   }
 
-  // Purpose is to force validation on this field.
-  @action
-  toggleInput() {
-    let estimate = this.model.get('doiEstimate');
-
-    this.model.set('doiEstimate', '0');
-    this.model.set('doiEstimate', estimate); //if (this.get('features').isEnabled('doiEstimate')) {
-  }
-
   @action
   searchCountryAction(query) {
     let countries = countryList.filter(function (country) {

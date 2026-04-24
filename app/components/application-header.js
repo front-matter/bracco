@@ -32,12 +32,6 @@ export default class ApplicationHeader extends Component {
   init(...args) {
     super.init(...args);
 
-    if (ENV.featureFlags['enable-doi-estimate']) {
-      this.features.enable('enableDoiEstimate');
-    } else {
-      this.features.disable('enableDoiEstimate');
-    }
-
     this.data = this.data || {};
   }
 

@@ -53,19 +53,6 @@
       >
         <el.control id="display-name-field" />
       </form.element>
-      {{#if this.features.enableDoiEstimate}}
-        <form.element
-          @controlType="text"
-          id="doi-estimate"
-          class="form-group"
-          @label="Estimated DOIs"
-          @property="doiEstimate"
-          required
-          @helpText={{html-safe (concat "Enter the number of DOIs expected to be registered annually. This amount will be pro-rated for the remaining months of the year. If the consortium fee cap applies enter zero (0). See more details in our <a href='" (get (links) "FEE_MODEL_URL" ) "' target='_blank'>fee model</a>.")}} as |el|
-        >
-          <el.control id="doi-estimate-field" placeholder = "0" required={{true}} />
-        </form.element>
-      {{/if}}
       <form.element
         @controlType="power-select"
         id="ror-id"

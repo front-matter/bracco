@@ -164,21 +164,6 @@
         @property="displayName"
         @helpText="Name of your organization as you would like it to appear in Fabrica and on DataCite’s website."
       />
-      {{#if (eq this.model.memberType 'consortium_organization')}}
-        {{#if this.features.enableDoiEstimate}}
-          <form.element
-            @controlType="text"
-            id="doi-estimate"
-            class="form-group"
-            @label="Estimated DOIs"
-            @property="doiEstimate"
-            required
-            @helpText={{html-safe (concat "Enter the number of DOIs expected to be registered annually. This amount will be pro-rated for the remaining months of the year. If the consortium fee cap applies enter zero (0). See more details in our <a href='" (get (links) "FEE_MODEL_URL" ) "' target='_blank'>fee model</a>.")}} as |el|
-          >
-            <el.control id="doi-estimate-field" placeholder="0" />
-          </form.element>
-        {{/if}}
-      {{/if}}
       <form.element
         @controlType="text"
         id="system-email"
